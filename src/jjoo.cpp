@@ -4,6 +4,19 @@
 #include <algorithm>
 
 //Auxiliares:
+void siFinalizadaEsta2Finalizo1(Competencia &c1,const Competencia &c2){
+    int i = 0;
+    vector<int> rank_to_pos;
+    vector<pair<int,bool>> controol;
+    if(c2.finalizada()){
+        while(i < c2.ranking().size()){
+            rank_to_pos.push_back(c2.ranking()[i].ciaNumber());
+            controol.push_back(make_pair(c2.participantes()[i].ciaNumber(),c2.leDioPositivo(c2.participantes()[i])));
+            i++;//tuve que seguir la definicion de finalizar,que usa numeros en vez de atletas, asi me ahorraba crearla de nuevo.
+        }
+        c1.finalizar(rank_to_pos,controol);
+    }
+}
 
 bool perteneceAtletaEnCompe(const Atleta &a, const Competencia &c){
     int i = 0;
@@ -131,7 +144,7 @@ vector<Atleta> JJOO::dePaseo() const {
         }
         i++;
     }
-    return fueron_de_paseo;
+    return fueron_de_paseo; //esta bien esta? no es que tiene que ser del juego, pero no participar en ninguna compe?
 }
 
 vector<pair<Pais, vector<int>>> JJOO::medallero() const {
@@ -167,18 +180,20 @@ int JJOO::boicotPorDisciplina(const Categoria &c, const Pais &p) {
     int j = 0;
     int res = 0;
     vector<Atleta> nuevos_participantes;
-    while (competencias()[i].categoria() != c){
+    while (competencias()[i].categoria() != c){ //i no frena nunca, y además
+        // sale del while en la primera vez que la guarda sea false. y termina ese while de por vida.
+        while (j < competencias()[i].participantes().size()){
+            if (competencias()[i].participantes()[j].nacionalidad() == p){
+                res+= 1;
+            } else {
+                nuevos_participantes.push_back(competencias()[i].participantes()[j]);
+            }
+            j++;
+        }
         i++;
     }
-    while (j < competencias()[i].participantes().size()){
-        if (competencias()[i].participantes()[j].nacionalidad() == p){
-            res+= 1;
-        } else {
-            nuevos_participantes.push_back(competencias()[i].participantes()[j]);
-        }
-        j++;
-    }
-    // faltaria aca setear la variable _participantes de la competencia "competencias()[i]" y reepmplazarla con la variable nuevos_participantes
+    // faltaria aca setear la variable _participantes de la competencia "competencias()[i]" y
+    // reepmplazarla con la variable nuevos_participantes
     return res;
 }
 
@@ -188,7 +203,46 @@ vector<Atleta> JJOO::losMasFracasados(const Pais &p) const {
 }
 
 void JJOO::liuSong(const Atleta &a, const Pais &p) {
-    return;
+    int i = 0;
+    Atleta nuevo_liu(a.nombre(),a.genero(),a.anioNacimiento(),p,a.ciaNumber()); //es igual salvo pais
+    while(i < a.deportes().size()){
+        nuevo_liu.entrenarNuevoDeporte(a.deportes()[i],a.capacidad(a.deportes()[i])); //tiene mismos deportes
+        i++;
+    }
+    // ahora saco el viejo, y agrego el nuevo a los atletas de jjoo
+    i = 0;
+    vector<Atleta> atletas_con_nuevo_liu; //esto se va a converter en atletas de jjoo despues.
+    while(i < atletas().size()){
+        if(!a.operator==(atletas()[i])){
+            atletas_con_nuevo_liu.push_back(atletas()[i]);
+        }else{
+            atletas_con_nuevo_liu.push_back(nuevo_liu);
+        }
+        i++;
+    }
+    // ahora me fijo las competencias en las que estaba y lo cambio por el nuevo
+    i = 0;
+    int j = 0;
+    vector<Competencia> competencias_con_nuevo_liu;
+    vector<vector<Competencia>> crono_liu;
+    while(i < cantDias()){
+        while(j < cronograma(i).size()) {
+            if (perteneceAtletaEnCompe(a,cronograma(i)[j])) {//si a esta en comp, creo una igual, pero con el otro liu
+                Competencia compe_con_liu_argento = Competencia(cronograma(i)[j].categoria().first,
+                                                                cronograma(i)[j].categoria().second,
+                                                                atletas_con_nuevo_liu);
+                siFinalizadaEsta2Finalizo1(compe_con_liu_argento,cronograma(i)[j]);
+                competencias_con_nuevo_liu.push_back(compe_con_liu_argento);//y la agrego a la lista de compes actualizada
+            }else{
+                competencias_con_nuevo_liu.push_back(cronograma(i)[j]);//si liu no participa en la competencia j, la quiero
+            }
+            j++;
+        }
+        crono_liu.push_back(competencias_con_nuevo_liu);
+        i++;
+    }
+    _atletas = atletas_con_nuevo_liu;
+    _cronograma = crono_liu;
 }
 
 Atleta JJOO::stevenBradbury() const {
@@ -210,6 +264,8 @@ bool JJOO::uyOrdenadoAsiHayUnPatron() const {
         while(j < mejores_paises.size() && res){
             if(mejores_paises[i] == mejores_paises[j] && i!=j){
                 res = mejores_paises[i+1] == mejores_paises[j+1] && mejores_paises[i-1] == mejores_paises[j-1];
+            }else{
+                res = false;
             }
             j++;
         }
