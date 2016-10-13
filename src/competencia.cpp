@@ -42,7 +42,7 @@ bool Competencia::leDioPositivo(const Atleta &a) const {
     return _lesTocoControlAntiDoping[i].second;
 }
 
-void Competencia::finalizar(const vector<int> &posiciones, const vector<pair<int, bool> > &control) {
+void Competencia::finalizar(const vector<int> &posiciones, const vector<pair<int, bool>> &control) {
     _finalizada = true;
     /////////////////////////// hacemos ranking
     int i = 0;
