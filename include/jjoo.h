@@ -13,7 +13,11 @@ private:
     vector<Atleta> _atletas;
     vector<vector<Competencia> > _cronograma;
     int _jornadaActual;
-
+    //aux
+    int cantidadDeRepes(const vector<Pais> &ps , const Pais &p);
+    Pais elMejorDelDia(const vector<Competencia> &cs);
+    Pais masRepetido(const vector<Pais> &ps);
+    //tp
     friend class jjoo_tests_competencias_al_transcurrir_un_dia_Test;
 
     friend class jjoo_tests_competencias_al_transcurrir_dos_dias_Test;

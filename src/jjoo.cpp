@@ -2,8 +2,43 @@
 
 #include <utility>
 #include <algorithm>
-
-
+// auxiliares
+int cantidadDeRepes(const vector<Pais> &ps , const Pais &p){
+    int res = 0;
+    int i = 0;
+    while(i < ps.size()){
+        if(ps[i] == p){
+            res+=1;
+        }
+        i++;
+    }
+    return res;
+}
+Pais masRepetido(const vector<Pais> &ps){
+    int i = 0;
+    Pais res = "Uganda"; //hay que ver si eso no afecta el caso lista vacia
+    while(i < ps.size()){
+        if(cantidadDeRepes(ps,ps[i]) > cantidadDeRepes(ps,res)){
+            res = ps[i];
+        }
+        i++;
+    }
+    return res;
+}
+Pais elMejorDelDia(const vector<Competencia> &cs){
+    Pais res;
+    vector<Pais> campeones_del_dia;
+    int i = 0;
+    while(i < cs.size()){
+        if(cs[i].ranking().size() >=1){
+            campeones_del_dia.push_back(cs[i].ranking()[0].nacionalidad());
+        }
+        i++;
+    }
+    res = masRepetido(campeones_del_dia);
+    return res;
+}
+// tp arranca aca
 JJOO::JJOO(const int &a, const vector<Atleta> &as, const vector<vector<Competencia>> &cs) {
     _anio = a;
     _atletas = as;
@@ -148,7 +183,25 @@ Atleta JJOO::stevenBradbury() const {
 }
 
 bool JJOO::uyOrdenadoAsiHayUnPatron() const {
-    return true;
+    bool res = true;
+    int i = 1;
+    int j = 1;
+    vector<Pais> mejores_paises;
+    while(i <= jornadaActual()){
+        mejores_paises.push_back(elMejorDelDia(cronograma(i)));
+        i++;
+    }
+    i = 1;
+    while(i < mejores_paises.size()){
+        while(j < mejores_paises.size() && res){
+            if(mejores_paises[i] == mejores_paises[j] && i!=j){
+                res = mejores_paises[i+1] == mejores_paises[j+1] && mejores_paises[i-1] == mejores_paises[j-1];
+            }
+            j++;
+        }
+        i++;
+    }
+    return res;
 }
 
 vector<Pais> JJOO::sequiaOlimpica() const {
