@@ -3,8 +3,32 @@
 #include <utility>
 #include <algorithm>
 
+//Auxiliares:
+bool perteneceAtletaEnCompe(const Atleta &a, const Competencia &c){
+    int i = 0;
+    bool res = false;
+    while (i < c.participantes().size() && !res){
+        if (a.operator==(c.participantes()[i])){
+            res = true;
+        }
+        i++;
+    }
+    return res;
+}
 
-JJOO::JJOO(const int &a, const vector<Atleta> &as, const vector<vector<Competencia>> &cs) {
+bool perteneceAtletaEnJuego(const Atleta &a, const JJOO &j){
+    int i = 0;
+    bool res = false;
+    while (i < j.competencias().size() && !res){
+        if (perteneceAtletaEnCompe(a, j.competencias()[i])){
+            res = true;
+        }
+        i++;
+    }
+    return res;
+}
+
+JJOO::JJOO(const int &a, const vector<Atleta> &as, const vector<vector<Competencia>> &cs) { //falta terminar
     _anio = a;
     _atletas = as;
     _cronograma = cs;
@@ -40,7 +64,6 @@ vector<Competencia> JJOO::competencias() const {
             _competencias.push_back(_cronograma[i][j]);
             j++;
         }
-
         i++;
     }
     return _competencias;
@@ -59,30 +82,15 @@ vector<Competencia> JJOO::competenciasFinalizadasConOroEnPodio() const {
 }
 
 vector<Atleta> JJOO::dePaseo() const {
-    vector<Atleta> fueron_pasear;
+    vector<Atleta> fueron_de_paseo;
     int i = 0;
-    int j = 0;
-    int k = 0;
-    bool esta_en_competencia;
-    while(i < _atletas.size()){
-        esta_en_competencia = false;
-        while(j < competencias().size()){
-            while(k < competencias()[j].participantes().size() && !esta_en_competencia){
-                if(!_atletas[i].operator==(competencias()[j].participantes()[k])){
-                    esta_en_competencia = false;
-                } else {
-                    esta_en_competencia = true;
-                }
-                k++; //agregar un aux pertenece en vez de este choclo
-            }
-            j++;
-        }
-        if(!esta_en_competencia){
-            fueron_pasear.push_back(_atletas[i]);
+    while (i < atletas().size()){
+        if(!perteneceAtletaEnJuego(atletas()[i], (*this))){
+            fueron_de_paseo.push_back(atletas()[i]);
         }
         i++;
     }
-    return fueron_pasear;
+    return fueron_de_paseo;
 }
 
 vector<pair<Pais, vector<int>>> JJOO::medallero() const {

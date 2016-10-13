@@ -14,6 +14,9 @@ private:
     vector<vector<Competencia> > _cronograma;
     int _jornadaActual;
 
+    bool perteneceAtletaEnCompe(const Atleta &a, const Competencia &c);
+    bool perteneceAtletaEnJuego(const Atleta &a, const JJOO &j);
+
     friend class jjoo_tests_competencias_al_transcurrir_un_dia_Test;
 
     friend class jjoo_tests_competencias_al_transcurrir_dos_dias_Test;
