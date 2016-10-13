@@ -1,5 +1,20 @@
 #include "../include/competencia.h"
 
+//Auxiliares:
+
+bool perteneceAtletaEnCompe(const Atleta &a, const Competencia &c){
+    int i = 0;
+    bool res = false;
+    while (i < c.participantes().size() && !res){
+        if (a.operator==(c.participantes()[i])){
+            res = true;
+        }
+        i++;
+    }
+    return res;
+}
+
+//////////////////////////////
 
 Competencia::Competencia(const Deporte &d, const Genero &g, const vector<Atleta> &as) {
     pair<Deporte, Genero> _categoria;
@@ -137,6 +152,19 @@ std::istream &operator>>(std::istream &is, Competencia &c) {
 }
 
 bool Competencia::operator==(const Competencia &c) const {
+    bool res = false;
+    int i = 0;
+    if (participantes().size() == c.participantes().size() && categoria() == c.categoria() && finalizada() == c.finalizada()){
+        while (i < participantes().size()){
+        perteneceAtletaEnCompe()
+        }
+    }
+
+    return res;
+}
+
+/*
+bool Competencia::operator==(const Competencia &c) const {
     int i = 0;
     int j = 0;
     bool son_la_misma = false;
@@ -172,6 +200,7 @@ bool Competencia::operator==(const Competencia &c) const {
     }
     return son_la_misma; //deje de hacerlo, xq creo que va a haber que escribir este. no funca bien este.
 }
+*/
 
 Competencia Competencia::operator=(const Competencia &c) {
     _categoria = c._categoria;
