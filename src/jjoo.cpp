@@ -130,11 +130,11 @@ vector<pair<Pais, vector<int>>> JJOO::medallero() const {
     while (i < atletas().size()){
         while (j < competencias().size()){
             if (competencias()[j].ranking()[0].nacionalidad() == atletas()[i].nacionalidad()){
-                oro = oro + 1;
+                oro += 1;
             } else if (competencias()[j].ranking()[1].nacionalidad() == atletas()[i].nacionalidad()){
-                plata = plata + 1;
+                plata += 1;
             } else if (competencias()[j].ranking()[2].nacionalidad() == atletas()[i].nacionalidad()){
-                bronce = bronce + 1;
+                bronce += 1;
             }
             j++;
         }
