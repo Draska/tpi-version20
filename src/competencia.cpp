@@ -88,7 +88,7 @@ bool Competencia::gananLosMasCapaces() const {
     bool res = true;
     int i = 0;
     Deporte d = _categoria.first;
-    while (i < _ranking.size()){
+    while (i + 1 < _ranking.size()){
         if(_ranking[i].capacidad(d) < _ranking[i+1].capacidad(d)){
             res = false;
         }
@@ -101,7 +101,7 @@ void Competencia::sancionarTramposos() {
     vector<Atleta> no_hay_adictos;
     int i = 0;
     int j = 0;
-    bool no_parece_dopado;
+    bool no_parece_dopado = false;
     _finalizada = true;
     while(i < _ranking.size()){
         while (j < _lesTocoControlAntiDoping.size()){

@@ -4,6 +4,7 @@
 #include <algorithm>
 
 //Auxiliares:
+
 bool perteneceAtletaEnCompe(const Atleta &a, const Competencia &c){
     int i = 0;
     bool res = false;
@@ -28,7 +29,47 @@ bool perteneceAtletaEnJuego(const Atleta &a, const JJOO &j){
     return res;
 }
 
-JJOO::JJOO(const int &a, const vector<Atleta> &as, const vector<vector<Competencia>> &cs) { //falta terminar
+int cantidadDeRepes(const vector<Pais> &ps , const Pais &p){
+    int res = 0;
+    int i = 0;
+    while(i < ps.size()){
+        if(ps[i] == p){
+            res+=1;
+        }
+        i++;
+    }
+    return res;
+}
+
+Pais masRepetido(const vector<Pais> &ps){
+    int i = 0;
+    Pais res = "Uganda"; //hay que ver si eso no afecta el caso lista vacia
+    while(i < ps.size()){
+        if(cantidadDeRepes(ps,ps[i]) > cantidadDeRepes(ps,res)){
+            res = ps[i];
+        }
+        i++;
+    }
+    return res;
+}
+
+Pais elMejorDelDia(const vector<Competencia> &cs){
+    Pais res;
+    vector<Pais> campeones_del_dia;
+    int i = 0;
+    while(i < cs.size()){
+        if(cs[i].ranking().size() >=1){
+            campeones_del_dia.push_back(cs[i].ranking()[0].nacionalidad());
+        }
+        i++;
+    }
+    res = masRepetido(campeones_del_dia);
+    return res;
+}
+
+////////////////////////////////////
+
+JJOO::JJOO(const int &a, const vector<Atleta> &as, const vector<vector<Competencia>> &cs){ // falta terminar
     _anio = a;
     _atletas = as;
     _cronograma = cs;
@@ -103,11 +144,11 @@ vector<pair<Pais, vector<int>>> JJOO::medallero() const {
     while (i < atletas().size()){
         while (j < competencias().size()){
             if (competencias()[j].ranking()[0].nacionalidad() == atletas()[i].nacionalidad()){
-                oro = oro + 1;
+                oro += 1;
             } else if (competencias()[j].ranking()[1].nacionalidad() == atletas()[i].nacionalidad()){
-                plata = plata + 1;
+                plata += 1;
             } else if (competencias()[j].ranking()[2].nacionalidad() == atletas()[i].nacionalidad()){
-                bronce = bronce + 1;
+                bronce += 1;
             }
             j++;
         }
@@ -156,7 +197,25 @@ Atleta JJOO::stevenBradbury() const {
 }
 
 bool JJOO::uyOrdenadoAsiHayUnPatron() const {
-    return true;
+    bool res = true;
+    int i = 1;
+    int j = 1;
+    vector<Pais> mejores_paises;
+    while(i <= jornadaActual()){
+        mejores_paises.push_back(elMejorDelDia(cronograma(i)));
+        i++;
+    }
+    i = 1;
+    while(i < mejores_paises.size()){
+        while(j < mejores_paises.size() && res){
+            if(mejores_paises[i] == mejores_paises[j] && i!=j){
+                res = mejores_paises[i+1] == mejores_paises[j+1] && mejores_paises[i-1] == mejores_paises[j-1];
+            }
+            j++;
+        }
+        i++;
+    }
+    return res;
 }
 
 vector<Pais> JJOO::sequiaOlimpica() const {

@@ -14,8 +14,13 @@ private:
     vector<vector<Competencia> > _cronograma;
     int _jornadaActual;
 
+    //Auxiliares:
+
     bool perteneceAtletaEnCompe(const Atleta &a, const Competencia &c);
     bool perteneceAtletaEnJuego(const Atleta &a, const JJOO &j);
+    int cantidadDeRepes(const vector<Pais> &ps , const Pais &p);
+    Pais elMejorDelDia(const vector<Competencia> &cs);
+    Pais masRepetido(const vector<Pais> &ps);
 
     friend class jjoo_tests_competencias_al_transcurrir_un_dia_Test;
 
