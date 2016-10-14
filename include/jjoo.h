@@ -15,6 +15,9 @@ private:
     int _jornadaActual;
 
     //Auxiliares:
+    int cantDeMedallas(const Atleta &a) const;
+    int cantDeCompetencias(const Atleta &a) const;
+    vector<Atleta> atletasDelPais(const Pais &p) const;
     bool perteneceCompetenciaEnCrono(const Competencia &c, const vector<Competencia> &cs) const;
     void finaliza(Competencia &c);
     vector<int> diasConMedalla(const Pais &p) const;

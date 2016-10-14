@@ -5,6 +5,69 @@
 
 
 //Auxiliares:
+bool JJOO::perteneceAtletaEnCompe(const Atleta &a, const Competencia &c) const {
+    int i = 0;
+    bool res = false;
+    while (i < c.participantes().size() && !res){
+        if (a.operator==(c.participantes()[i])){
+            res = true;
+        }
+        i++;
+    }
+    return res;
+}
+
+bool JJOO::perteneceAtletaEnJuego(const Atleta &a, const JJOO &j) const {
+    int i = 0;
+    bool res = false;
+    while (i < j.competencias().size() && !res){
+        if (perteneceAtletaEnCompe(a, j.competencias()[i])){
+            res = true;
+        }
+        i++;
+    }
+    return res;
+}
+int JJOO::cantDeMedallas(const Atleta &a) const {
+    int i = 0;
+    int res = 0;
+    while(i < competencias().size()){
+        if(perteneceAtletaEnCompe(a, competencias()[i]) && a == competencias()[i].ranking()[0]){
+            res += 1;
+        } else if (perteneceAtletaEnCompe(a, competencias()[i]) && a == competencias()[i].ranking()[1]){
+            res += 1;
+        } else if (perteneceAtletaEnCompe(a, competencias()[i]) && a == competencias()[i].ranking()[2]){
+            res += 1;
+        }
+        i++;
+    }
+    return res;
+}
+
+vector<Atleta> JJOO::atletasDelPais(const Pais &p) const {
+    int i = 0;
+    vector<Atleta> son_de_p;
+    while (i < atletas().size()){
+        if(atletas()[i].nacionalidad() == p){
+            son_de_p.push_back(atletas()[i]);
+        }
+        i++;
+    }
+    return son_de_p;
+}
+
+int JJOO::cantDeCompetencias(const Atleta &a) const{
+    int i = 0;
+    int res = 0;
+    while(i < competencias().size()){
+        if(perteneceAtletaEnCompe(a, competencias()[i])){
+            res += 1;
+        }
+        i++;
+    }
+    return res;
+}
+
 bool JJOO::perteneceCompetenciaEnCrono(const Competencia &c, const vector<Competencia> &cs) const {
     int i = 0;
     bool res = false;
@@ -124,29 +187,7 @@ void JJOO::siFinalizadaEsta2Finalizo1(Competencia &c1,const Competencia &c2){ //
     }
 }
 
-bool JJOO::perteneceAtletaEnCompe(const Atleta &a, const Competencia &c) const {
-    int i = 0;
-    bool res = false;
-    while (i < c.participantes().size() && !res){
-        if (a.operator==(c.participantes()[i])){
-            res = true;
-        }
-        i++;
-    }
-    return res;
-}
 
-bool JJOO::perteneceAtletaEnJuego(const Atleta &a, const JJOO &j) const {
-    int i = 0;
-    bool res = false;
-    while (i < j.competencias().size() && !res){
-        if (perteneceAtletaEnCompe(a, j.competencias()[i])){
-            res = true;
-        }
-        i++;
-    }
-    return res;
-}
 
 int JJOO::cantidadDeRepes(const vector<Pais> &ps , const Pais &p) const {
     int res = 0;
@@ -304,8 +345,27 @@ int JJOO::boicotPorDisciplina(const Categoria &c, const Pais &p) {
 }
 
 vector<Atleta> JJOO::losMasFracasados(const Pais &p) const {
-    vector<Atleta> ret;
-    return ret;
+    int i = 0;
+    int j = 0;
+    vector<Atleta> participativo;
+    vector<Atleta> losers;
+    while(i < atletasDelPais(p).size()){
+        while(j < atletasDelPais(p).size()) {
+            if(cantDeCompetencias(atletasDelPais(p)[i]) >= cantDeCompetencias(atletasDelPais(p)[j])){
+                participativo.push_back(atletasDelPais(p)[i]);
+            }
+            j++;
+        }
+        i++;
+    }
+    i = 0;
+    while (i < participativo.size()){
+        if(cantDeMedallas(participativo[i]) == 0){
+            losers.push_back(participativo[i]);
+        }
+        i++;
+    }
+    return losers;
 }
 
 void JJOO::liuSong(const Atleta &a, const Pais &p) {
