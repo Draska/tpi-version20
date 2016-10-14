@@ -17,11 +17,11 @@ bool JJOO::perteneceAtletaEnCompe(const Atleta &a, const Competencia &c) const {
     return res;
 }
 
-bool JJOO::perteneceAtletaEnJuego(const Atleta &a, const JJOO &j) const {
+bool JJOO::perteneceAtletaEnAlgunaCompe(const Atleta &a) const {
     int i = 0;
     bool res = false;
-    while (i < j.competencias().size() && !res){
-        if (perteneceAtletaEnCompe(a, j.competencias()[i])){
+    while (i < competencias().size() && !res){
+        if (perteneceAtletaEnCompe(a, competencias()[i])){
             res = true;
         }
         i++;
@@ -137,7 +137,7 @@ int JJOO::maxDiasSinMedalla(const vector<Pais> &ps) const {
 
 vector<Pais> JJOO::paisesDeLosJuegos(const vector<Atleta> &as) const {
     int i = 0;
-    int j = 0;
+    int j;
     bool aparece;
     Pais comodin;
     vector<Pais> paises_de_los_games{as[0].nacionalidad()};
@@ -146,9 +146,7 @@ vector<Pais> JJOO::paisesDeLosJuegos(const vector<Atleta> &as) const {
         j = 0;// por precaucion para que siempre arranque a mirar bien
         aparece = false;// idem.
         while (j < paises_de_los_games.size() && !aparece){
-            if(comodin != paises_de_los_games[j]) {
-                aparece = false;
-            } else {
+            if(comodin == paises_de_los_games[j]) {
                 aparece = true;
             }
             j++;
@@ -227,6 +225,82 @@ Pais JJOO::elMejorDelDia(const vector<Competencia> &cs) const {
     return res;
 }
 
+bool JJOO::noEsta(const vector<Atleta> &as, const Pais &p) const {
+    bool res = true;
+    int i = 0;
+    while (i < as.size() && res){
+        res = as[i].nacionalidad() != p;
+        i++;
+    }
+    return res;
+}
+
+vector<Atleta> JJOO::filtrarPaisesRepetidos(const vector<Atleta> &as) const {
+    vector<Atleta> limpios;
+    int i = 0;
+    while (i < as.size()){
+        if (noEsta(as, as[i].nacionalidad())){
+            limpios.push_back(as[i]);
+        }
+        i++;
+    }
+    return limpios;
+}
+
+vector<pair<Pais, vector<int>>> JJOO::sacarElemento(const vector<pair<Pais, vector<int>>> &ms, const pair<Pais, vector<int>> &e) const {
+    vector<pair<Pais, vector<int>>> limpio; //si sabés cómo inicializarlo vacío, inicializalo vacío así no se indefine si pasan lista vacía.
+    //Y también cambiá el e
+    int i = 0;
+    while (i < ms.size()){
+        if (ms[i] != e){
+            limpio.push_back(ms[i]);
+        }
+        i++;
+    }
+    return limpio;
+};
+
+bool JJOO::esMejor(const vector<int> &a, const vector<int> &b) const { // si tenes ganas chequeá si me falto algún caso
+    bool res = true;
+    if (a[0] < b[0]){
+        res = false;
+    } else if (a[0] == b[0] && a.size() == 1 && b.size() > 1){
+        res = false;
+    } else if (a.size() > 1 && b.size() > 1 && a[0] == b[0] && a[1] < b[1]){
+        res = false;
+    } else if (a.size() == 2 && b.size() > 2 && a[0] == b[0] && a[1] == b[1]){
+        res = false;
+    } else if (a.size() == 3 && b.size() == 3 && a[0] == b[0] && a[1] == b[1] && a[2] < b[2]){
+        res = false;
+    }
+    return res;
+}
+
+vector<pair<Pais, vector<int>>> JJOO::ordenarMedallero(vector<pair<Pais, vector<int>>> &ms) const {
+    vector<pair<Pais, vector<int>>> ordenado;
+    pair<Pais, vector<int>> max_parcial;
+    int ya_esta = 0;
+    int i = 1;
+    while (ya_esta != ms.size()){ //por las dudas chequea si estan bien iniciadas las dos variables
+        if (esMejor(ms[i].second, max_parcial.second)){
+            max_parcial = ms[i];
+        }
+        if (ms.size() == 2){
+            ordenado.push_back(max_parcial);
+            ms = sacarElemento(ms, max_parcial);
+            ordenado.push_back(ms[0]);
+        } else if (i == ms.size() - 1){
+            ordenado.push_back(max_parcial);
+            ms = sacarElemento(ms, max_parcial); // le saqué el const al ms en el titulo de la funcion para que esto se pueda hacer
+            ya_esta += 1;
+            i = 0;
+            max_parcial = ms[0];
+        }
+        i++;
+    }
+    return ordenado;
+};
+
 ////////////////////////////////////
 
 JJOO::JJOO(const int &a, const vector<Atleta> &as, const vector<vector<Competencia>> &cs){ // falta terminar
@@ -286,28 +360,30 @@ vector<Atleta> JJOO::dePaseo() const {
     vector<Atleta> fueron_de_paseo;
     int i = 0;
     while (i < atletas().size()){
-        if(!perteneceAtletaEnJuego(atletas()[i], (*this))){//este this es dudoso,deberia pasar eso?
+        if(!perteneceAtletaEnAlgunaCompe(atletas()[i])){
             fueron_de_paseo.push_back(atletas()[i]);
         }
         i++;
     }
     return fueron_de_paseo; //esta bien esta? no es que tiene que ser del juego, pero no participar en ninguna compe?
-}
+} //te gusta más así?
 
-vector<pair<Pais, vector<int>>> JJOO::medallero() const {
+vector<pair<Pais, vector<int>>> JJOO::medallero() const { //decime si te gusta ;) grrr
     int i = 0;
     int j = 0;
     int oro = 0;
     int plata = 0;
     int bronce = 0;
     vector<pair<Pais, vector<int>>> res;
-    while (i < atletas().size()){
+    while (i < filtrarPaisesRepetidos(atletas()).size()){
         while (j < competencias().size()){
             if (competencias()[j].ranking()[0].nacionalidad() == atletas()[i].nacionalidad()){
                 oro += 1;
-            } else if (competencias()[j].ranking()[1].nacionalidad() == atletas()[i].nacionalidad()){
+            }
+            if (competencias()[j].ranking()[1].nacionalidad() == atletas()[i].nacionalidad()){
                 plata += 1;
-            } else if (competencias()[j].ranking()[2].nacionalidad() == atletas()[i].nacionalidad()){
+            }
+            if (competencias()[j].ranking()[2].nacionalidad() == atletas()[i].nacionalidad()){
                 bronce += 1;
             }
             j++;
@@ -319,29 +395,10 @@ vector<pair<Pais, vector<int>>> JJOO::medallero() const {
         res.push_back(make_pair(atletas()[i].nacionalidad(), medallas));
         i++;
     }
-    return res;
+    return ordenarMedallero(res);
 }
 
 int JJOO::boicotPorDisciplina(const Categoria &c, const Pais &p) {
-    int i = 0;
-    int j = 0;
-    int res = 0;
-    vector<Atleta> nuevos_participantes;
-    while (competencias()[i].categoria() != c){ //i no frena nunca, y además
-        // sale del while en la primera vez que la guarda sea false. y termina ese while de por vida.
-        while (j < competencias()[i].participantes().size()){
-            if (competencias()[i].participantes()[j].nacionalidad() == p){
-                res+= 1;
-            } else {
-                nuevos_participantes.push_back(competencias()[i].participantes()[j]);
-            }
-            j++;
-        }
-        i++;
-    }
-    // faltaria aca setear la variable _participantes de la competencia "competencias()[i]" y
-    // reepmplazarla con la variable nuevos_participantes
-    return res;
 }
 
 vector<Atleta> JJOO::losMasFracasados(const Pais &p) const {
@@ -504,7 +561,7 @@ bool JJOO::operator==(const JJOO &j) const {
                 cantDias() == j.cantDias() &&
                 jornadaActual() == j.jornadaActual() &&
                 atletas().size() == j.atletas().size() &&
-                perteneceAtletaEnJuego(atletas()[i], j)) {
+                perteneceAtletaEnAlgunaCompe(j.atletas()[i])) { //Cambie el nombre de mi auxiliar, sigue funcando? no la miré.
             res = true;
         } else {
             res = false;

@@ -27,11 +27,18 @@ private:
     Atleta elMenosCapaz(const vector<pair<Atleta,Deporte>> &as) const;
     void siFinalizadaEsta2Finalizo1(Competencia &c1,const Competencia &c2);
     bool perteneceAtletaEnCompe(const Atleta &a, const Competencia &c) const;
-    bool perteneceAtletaEnJuego(const Atleta &a, const JJOO &j) const;
+    bool perteneceAtletaEnAlgunaCompe(const Atleta &a) const;
     int cantidadDeRepes(const vector<Pais> &ps , const Pais &p) const;
     Pais elMejorDelDia(const vector<Competencia> &cs) const;
     Pais masRepetido(const vector<Pais> &ps) const;
+    bool noEsta(const vector<Atleta> &as, const Pais &p) const;
+    vector<Atleta> filtrarPaisesRepetidos(const vector<Atleta> &as) const;
+    vector<pair<Pais, vector<int>>> sacarElemento(const vector<pair<Pais, vector<int>>> &ms, const pair<Pais, vector<int>> &e) const;
+    bool esMejor(const vector<int> &a, const vector<int> &b) const;
+    vector<pair<Pais, vector<int>>> ordenarMedallero(vector<pair<Pais, vector<int>>> &ms) const;
+
     //end auxiliares
+
     friend class jjoo_tests_competencias_al_transcurrir_un_dia_Test;
 
     friend class jjoo_tests_competencias_al_transcurrir_dos_dias_Test;
