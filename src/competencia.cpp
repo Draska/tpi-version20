@@ -2,7 +2,7 @@
 
 //Auxiliares:
 
-bool perteneceAtletaEnCompe(const Atleta &a, const Competencia &c){ //corregir de metodo a auxiliar (se aplica en el operator)
+bool Competencia::perteneceAtletaEnCompe(const Atleta &a, const Competencia &c) const {
     int i = 0;
     bool res = false;
     while (i < c.participantes().size() && !res){
@@ -12,7 +12,7 @@ bool perteneceAtletaEnCompe(const Atleta &a, const Competencia &c){ //corregir d
     return res;
 }
 
-bool fueControladoYDioIgual(const pair<Atleta, bool> &a, const Competencia &c){
+bool Competencia::fueControladoYDioIgual(const pair<Atleta, bool> &a, const Competencia &c) const {
     bool res = false;
     int i = 0;
     while (i < c.participantes().size() && !res){
