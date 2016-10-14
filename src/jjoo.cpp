@@ -3,8 +3,106 @@
 #include <utility>
 #include <algorithm>
 
+
 //Auxiliares:
-void siFinalizadaEsta2Finalizo1(Competencia &c1,const Competencia &c2){
+
+void JJOO::finaliza(Competencia &c){
+    int i = 0;
+    vector<int> pos_to_num;
+    vector<pair<int,bool>> controlo_uno;
+    while(i < c.participantes().size()){
+        pos_to_num.push_back(c.participantes()[i].ciaNumber());
+        i++;//tuve que seguir la definicion de finalizar,que usa numeros en vez de atletas, asi me ahorraba crearla de nuevo.
+    }
+    controlo_uno.push_back(make_pair(c.participantes()[0].ciaNumber(),c.leDioPositivo(c.participantes()[0])));
+    c.finalizar(pos_to_num,controlo_uno);
+
+}
+
+vector<int> JJOO::diasConMedalla(const Pais &p) const {
+    int i = 1;
+    int j = 0;
+    vector<int> gane_today = {0};
+    while(i <= jornadaActual()){
+        while (j < cronograma(i).size()){
+            if(cronograma(i)[j].ranking().size()>=1 && cronograma(i)[j].ranking()[0].nacionalidad() == p){
+                gane_today.push_back(i);
+            } else if(cronograma(i)[j].ranking().size()>=2 && cronograma(i)[j].ranking()[1].nacionalidad() == p){
+                gane_today.push_back(i);
+            } else if(cronograma(i)[j].ranking().size()>=3 && cronograma(i)[j].ranking()[2].nacionalidad() == p){
+                gane_today.push_back(i);
+            }
+            j++;
+        }
+
+        i++;
+    }
+    return gane_today;
+}
+
+int JJOO::masDiasSinMedalla(const Pais p) const {
+    int i = 1;
+    int res = 0;
+    while(i < diasConMedalla(p).size()) {
+        if (diasConMedalla(p)[i] - diasConMedalla(p)[i-1] > res){
+            res = diasConMedalla(p)[i] - diasConMedalla(p)[i-1];
+        }
+        i++;
+    }
+    return res;
+}
+
+int JJOO::maxDiasSinMedalla(const vector<Pais> &ps) const {
+    int i = 0;
+    int res = 0;
+    while(i < ps.size()){
+        if(masDiasSinMedalla(ps[i]) > res){
+            res = masDiasSinMedalla(ps[i]);
+        }
+        i++;
+    }
+    return res;
+}
+
+vector<Pais> JJOO::paisesDeLosJuegos(const vector<Atleta> &as) const {
+    int i = 0;
+    int j = 0;
+    bool aparece;
+    Pais comodin;
+    vector<Pais> paises_de_los_games{as[0].nacionalidad()};
+    while(i < as.size()){
+        comodin = as[i].nacionalidad();
+        j = 0;// por precaucion para que siempre arranque a mirar bien
+        aparece = false;// idem.
+        while (j < paises_de_los_games.size() && !aparece){
+            if(comodin != paises_de_los_games[j]) {
+                aparece = false;
+            } else {
+                aparece = true;
+            }
+            j++;
+        }
+        if(!aparece){
+            paises_de_los_games.push_back(comodin);
+        }
+        i++;
+    }
+    return paises_de_los_games;
+}
+
+Atleta JJOO::elMenosCapaz(const vector<pair<Atleta,Deporte>> &as) const {
+    int i = 0;
+    pair<Atleta,Deporte> res = as[0];
+    while(i < as.size()){
+        if(as[i].first.capacidad(as[i].second) <= res.first.capacidad(res.second)){
+            res = as[i];
+        }
+        i++;
+    }
+    return res.first;
+}
+
+void JJOO::siFinalizadaEsta2Finalizo1(Competencia &c1,const Competencia &c2){ //esta noes const, xq finaliza una comp.
     int i = 0;
     vector<int> rank_to_pos;
     vector<pair<int,bool>> controol;
@@ -18,7 +116,7 @@ void siFinalizadaEsta2Finalizo1(Competencia &c1,const Competencia &c2){
     }
 }
 
-bool perteneceAtletaEnCompe(const Atleta &a, const Competencia &c){
+bool JJOO::perteneceAtletaEnCompe(const Atleta &a, const Competencia &c) const {
     int i = 0;
     bool res = false;
     while (i < c.participantes().size() && !res){
@@ -30,7 +128,7 @@ bool perteneceAtletaEnCompe(const Atleta &a, const Competencia &c){
     return res;
 }
 
-bool perteneceAtletaEnJuego(const Atleta &a, const JJOO &j){
+bool JJOO::perteneceAtletaEnJuego(const Atleta &a, const JJOO &j) const {
     int i = 0;
     bool res = false;
     while (i < j.competencias().size() && !res){
@@ -42,7 +140,7 @@ bool perteneceAtletaEnJuego(const Atleta &a, const JJOO &j){
     return res;
 }
 
-int cantidadDeRepes(const vector<Pais> &ps , const Pais &p){
+int JJOO::cantidadDeRepes(const vector<Pais> &ps , const Pais &p) const {
     int res = 0;
     int i = 0;
     while(i < ps.size()){
@@ -54,7 +152,7 @@ int cantidadDeRepes(const vector<Pais> &ps , const Pais &p){
     return res;
 }
 
-Pais masRepetido(const vector<Pais> &ps){
+Pais JJOO::masRepetido(const vector<Pais> &ps) const {
     int i = 0;
     Pais res = "Uganda"; //hay que ver si eso no afecta el caso lista vacia
     while(i < ps.size()){
@@ -66,7 +164,7 @@ Pais masRepetido(const vector<Pais> &ps){
     return res;
 }
 
-Pais elMejorDelDia(const vector<Competencia> &cs){
+Pais JJOO::elMejorDelDia(const vector<Competencia> &cs) const {
     Pais res;
     vector<Pais> campeones_del_dia;
     int i = 0;
@@ -139,7 +237,7 @@ vector<Atleta> JJOO::dePaseo() const {
     vector<Atleta> fueron_de_paseo;
     int i = 0;
     while (i < atletas().size()){
-        if(!perteneceAtletaEnJuego(atletas()[i], (*this))){
+        if(!perteneceAtletaEnJuego(atletas()[i], (*this))){//este this es dudoso,deberia pasar eso?
             fueron_de_paseo.push_back(atletas()[i]);
         }
         i++;
@@ -220,7 +318,7 @@ void JJOO::liuSong(const Atleta &a, const Pais &p) {
         }
         i++;
     }
-    // ahora me fijo las competencias en las que estaba y lo cambio por el nuevo
+    // ahora me fijo las competencias en las que estaba y lo cambio por el nuevo liu song
     i = 0;
     int j = 0;
     vector<Competencia> competencias_con_nuevo_liu;
@@ -230,7 +328,8 @@ void JJOO::liuSong(const Atleta &a, const Pais &p) {
             if (perteneceAtletaEnCompe(a,cronograma(i)[j])) {//si a esta en comp, creo una igual, pero con el otro liu
                 Competencia compe_con_liu_argento = Competencia(cronograma(i)[j].categoria().first,
                                                                 cronograma(i)[j].categoria().second,
-                                                                atletas_con_nuevo_liu);
+                                                                atletas_con_nuevo_liu);//esto hay que pensarlo. Puede que
+                //este metiendo siempre todos los atletas de los juegos como participantes. habria que filtrar por cat.
                 siFinalizadaEsta2Finalizo1(compe_con_liu_argento,cronograma(i)[j]);
                 competencias_con_nuevo_liu.push_back(compe_con_liu_argento);//y la agrego a la lista de compes actualizada
             }else{
@@ -246,8 +345,16 @@ void JJOO::liuSong(const Atleta &a, const Pais &p) {
 }
 
 Atleta JJOO::stevenBradbury() const {
-    Atleta ret("Bob esponja", Genero::Masculino, 0, "Pais falso", 0);
-    return ret;
+    Atleta brad("Bob esponja", Genero::Masculino, 0, "Pais falso", 0);
+    int i = 0;
+    vector<pair<Atleta,Deporte>> medallistas_de_oro;
+    while(i < competenciasFinalizadasConOroEnPodio().size()){
+        medallistas_de_oro.push_back(make_pair(competenciasFinalizadasConOroEnPodio()[i].ranking()[0],
+                                               competenciasFinalizadasConOroEnPodio()[i].categoria().first));
+        i++;
+    }
+    brad.operator=(elMenosCapaz(medallistas_de_oro));
+    return brad;
 }
 
 bool JJOO::uyOrdenadoAsiHayUnPatron() const {
@@ -274,13 +381,33 @@ bool JJOO::uyOrdenadoAsiHayUnPatron() const {
     return res;
 }
 
+
 vector<Pais> JJOO::sequiaOlimpica() const {
     vector<Pais> ret;
+    int i = 0;
+    vector<Pais> ps = paisesDeLosJuegos(atletas());//hice con parametro xq c++ estaba haciendo cosas raras sino.
+    while(i < ps.size()) {
+        if (masDiasSinMedalla(ps[i]) == maxDiasSinMedalla(ps)) {
+            ret.push_back(ps[i]);
+        }
+        i++;
+    }
     return ret;
 }
 
 void JJOO::transcurrirDia() {
-    return;
+    _jornadaActual += 1;
+    int i = 1;
+    int j = 0;
+    while (i < jornadaActual()){
+        while(j < cronograma(i).size()){
+            if (!cronograma(i)[j].finalizada()) {
+                finaliza(cronograma(i)[j]);
+            }
+            j++;
+        }
+        i++;
+    }
 }
 
 void JJOO::mostrar(std::ostream &os) const {
