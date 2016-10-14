@@ -1,5 +1,28 @@
 #include "../include/competencia.h"
 
+//Auxiliares:
+
+bool perteneceAtletaEnCompe(const Atleta &a, const Competencia &c){ //corregir de metodo a auxiliar (se aplica en el operator)
+    int i = 0;
+    bool res = false;
+    while (i < c.participantes().size() && !res){
+        res = a.operator==(c.participantes()[i]);
+        i++;
+    }
+    return res;
+}
+
+bool fueControladoYDioIgual(const pair<Atleta, bool> &a, const Competencia &c){
+    bool res = false;
+    int i = 0;
+    while (i < c.participantes().size() && !res){
+        res = a.first.operator==(c.participantes()[i]) && a.second == c.leDioPositivo(c.participantes()[i]);
+        i++;
+    }
+    return res;
+}
+
+//////////////////////////////
 
 Competencia::Competencia(const Deporte &d, const Genero &g, const vector<Atleta> &as) {
     pair<Deporte, Genero> _categoria;
@@ -137,40 +160,25 @@ std::istream &operator>>(std::istream &is, Competencia &c) {
 }
 
 bool Competencia::operator==(const Competencia &c) const {
+    bool res = false;
     int i = 0;
-    int j = 0;
-    bool son_la_misma = false;
-    if(_participantes.size() == c.participantes().size() && _lesTocoControlAntiDoping.size() == c.lesTocoControlAntiDoping().size()) {
-        while (i < _participantes.size()) {
-            son_la_misma = false; // no se si en el ultimo ciclo(cuando llega a romper la guarda) la va a cambiar, ó
-            // corta antes(que es lo que quiero)
-            while (j < _participantes.size() && !son_la_misma) {
-                if (_categoria == c.categoria() &&
-                    _finalizada == c.finalizada()) {
-                    son_la_misma = _participantes[i].operator==(c.participantes()[j]); //para cada participante i, miro si
-                    // existe un participante j igual.
-                }
-                j++;
+    if (participantes().size() == c.participantes().size() && categoria() == c.categoria() && finalizada() == c.finalizada()){
+        res = true;
+        if (finalizada() && lesTocoControlAntiDoping().size() == c.lesTocoControlAntiDoping().size()){
+            while (i < lesTocoControlAntiDoping().size() && res){
+                res = fueControladoYDioIgual(_lesTocoControlAntiDoping[i], c);
+                i++;
             }
-            i++;
+        } else if (finalizada()){
+            res = false;
         }
-    } else {
-        !son_la_misma;
-    }
-    if(_finalizada && son_la_misma){ //si venia con t-o-d-o igual, voy a ver que para cada i cosas, exista j igual
         i = 0;
-        j = 0;
-        son_la_misma = false;
-        while (i < _lesTocoControlAntiDoping.size()){
-            while(j < _lesTocoControlAntiDoping.size()){
-                son_la_misma = _lesTocoControlAntiDoping[i].first == c.lesTocoControlAntiDoping()[j]
-                               && _lesTocoControlAntiDoping[i].second == c.leDioPositivo(c.lesTocoControlAntiDoping()[j]);
-                j++;
-            }
+        while (i < participantes().size() && res){
+            res = perteneceAtletaEnCompe(participantes()[i], c);
             i++;
         }
     }
-    return son_la_misma; //deje de hacerlo, xq creo que va a haber que escribir este. no funca bien este.
+    return res;
 }
 
 Competencia Competencia::operator=(const Competencia &c) {
@@ -181,4 +189,3 @@ Competencia Competencia::operator=(const Competencia &c) {
     _lesTocoControlAntiDoping = c._lesTocoControlAntiDoping;
     return (*this);
 }
-
