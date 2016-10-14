@@ -6,6 +6,19 @@
 
 //Auxiliares:
 
+void JJOO::finaliza(Competencia &c){
+    int i = 0;
+    vector<int> pos_to_num;
+    vector<pair<int,bool>> controlo_uno;
+    while(i < c.participantes().size()){
+        pos_to_num.push_back(c.participantes()[i].ciaNumber());
+        i++;//tuve que seguir la definicion de finalizar,que usa numeros en vez de atletas, asi me ahorraba crearla de nuevo.
+    }
+    controlo_uno.push_back(make_pair(c.participantes()[0].ciaNumber(),c.leDioPositivo(c.participantes()[0])));
+    c.finalizar(pos_to_num,controlo_uno);
+
+}
+
 vector<int> JJOO::diasConMedalla(const Pais &p) const {
     int i = 1;
     int j = 0;
@@ -383,7 +396,18 @@ vector<Pais> JJOO::sequiaOlimpica() const {
 }
 
 void JJOO::transcurrirDia() {
-    return;
+    _jornadaActual += 1;
+    int i = 1;
+    int j = 0;
+    while (i < jornadaActual()){
+        while(j < cronograma(i).size()){
+            if (!cronograma(i)[j].finalizada()) {
+                finaliza(cronograma(i)[j]);
+            }
+            j++;
+        }
+        i++;
+    }
 }
 
 void JJOO::mostrar(std::ostream &os) const {

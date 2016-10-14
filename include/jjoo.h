@@ -15,6 +15,7 @@ private:
     int _jornadaActual;
 
     //Auxiliares:
+    void finaliza(Competencia &c);
     vector<int> diasConMedalla(const Pais &p) const;
     int masDiasSinMedalla(const Pais p) const;
     int maxDiasSinMedalla(const vector<Pais> &ps) const;
