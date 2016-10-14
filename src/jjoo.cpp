@@ -260,7 +260,7 @@ bool JJOO::uyOrdenadoAsiHayUnPatron() const {
         i++;
     }
     i = 1;
-    while(i < mejores_paises.size()){
+    while(i < mejores_paises.size() && res){
         while(j < mejores_paises.size() && res){
             if(mejores_paises[i] == mejores_paises[j] && i!=j){
                 res = mejores_paises[i+1] == mejores_paises[j+1] && mejores_paises[i-1] == mejores_paises[j-1];

@@ -2,13 +2,21 @@
 
 //Auxiliares:
 
-bool perteneceAtletaEnCompe(const Atleta &a, const Competencia &c){
+bool perteneceAtletaEnCompe(const Atleta &a, const Competencia &c){ //corregir de metodo a auxiliar (se aplica en el operator)
     int i = 0;
     bool res = false;
     while (i < c.participantes().size() && !res){
-        if (a.operator==(c.participantes()[i])){
-            res = true;
-        }
+        res = a.operator==(c.participantes()[i]);
+        i++;
+    }
+    return res;
+}
+
+bool fueControladoYDioIgual(const pair<Atleta, bool> &a, const Competencia &c){
+    bool res = false;
+    int i = 0;
+    while (i < c.participantes().size() && !res){
+        res = a.first.operator==(c.participantes()[i]) && a.second == c.leDioPositivo(c.participantes()[i]);
         i++;
     }
     return res;
@@ -155,11 +163,21 @@ bool Competencia::operator==(const Competencia &c) const {
     bool res = false;
     int i = 0;
     if (participantes().size() == c.participantes().size() && categoria() == c.categoria() && finalizada() == c.finalizada()){
-        while (i < participantes().size()){
-        perteneceAtletaEnCompe()
+        res = true;
+        if (finalizada() && lesTocoControlAntiDoping().size() == c.lesTocoControlAntiDoping().size()){
+            while (i < lesTocoControlAntiDoping().size() && res){
+                res = fueControladoYDioIgual(_lesTocoControlAntiDoping[i], c);
+                i++;
+            }
+        } else if (finalizada()){
+            res = false;
+        }
+        i = 0;
+        while (i < participantes().size() && res){
+            res = perteneceAtletaEnCompe(participantes()[i], c);
+            i++;
         }
     }
-
     return res;
 }
 

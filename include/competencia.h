@@ -17,6 +17,7 @@ private:
     //Auxiliares:
 
     bool perteneceAtletaEnCompe(const Atleta &a, const Competencia &c);
+    bool fueControladoYDioIgual(const pair<Atleta, bool> &a, const Competencia &c);
 
 public:
     Competencia(const Deporte &d, const Genero &g, const vector<Atleta> &as);
