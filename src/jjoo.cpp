@@ -5,6 +5,14 @@
 
 
 //Auxiliares:
+bool JJOO::perteneceCompetenciaEnCrono(const Competencia &c, const vector<Competencia> &cs) const {
+    int i = 0;
+    bool res = false;
+    while(i < cs.size() && !res){
+        res = c.operator==(cs[i]);
+    }
+    return res;
+}
 
 void JJOO::finaliza(Competencia &c){
     int i = 0;
@@ -428,7 +436,38 @@ std::istream &operator>>(std::istream &is, JJOO &j) {
 }
 
 bool JJOO::operator==(const JJOO &j) const {
-    return true;
+    bool res = true;
+    int i = 0;
+    int k = 0;
+    while(i < atletas().size() && res) {
+        if (anio() == j.anio() &&
+                cantDias() == j.cantDias() &&
+                jornadaActual() == j.jornadaActual() &&
+                atletas().size() == j.atletas().size() &&
+                perteneceAtletaEnJuego(atletas()[i], j)) {
+            res = true;
+        } else {
+            res = false;
+        }
+        i++;
+
+    }
+    //solo si el resto dio igual, me pongo a mirar los cronogramas
+    if(res){
+        i = 0;
+        while (i < cantDias()){
+            while(k < cronograma(i).size() && res) {
+                if (cronograma(i).size() == j.cronograma(i).size()) {
+                    res = perteneceCompetenciaEnCrono(cronograma(i)[k],j.cronograma(i));
+                } else {
+                    res = false;
+                }
+                k++;
+            }
+            i++;
+        }
+    }
+    return res;
 }
 
 JJOO JJOO::operator=(const JJOO &j) {
