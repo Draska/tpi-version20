@@ -16,6 +16,7 @@ private:
 
     //Auxiliares:
 
+    Atleta elMenosCapaz(const vector<pair<Atleta,Deporte>> &as);
     void siFinalizadaEsta2Finalizo1(Competencia &c1,const Competencia &c2);
     bool perteneceAtletaEnCompe(const Atleta &a, const Competencia &c);
     bool perteneceAtletaEnJuego(const Atleta &a, const JJOO &j);

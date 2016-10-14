@@ -4,6 +4,18 @@
 #include <algorithm>
 
 //Auxiliares:
+Atleta elMenosCapaz(const vector<pair<Atleta,Deporte>> &as){
+    int i = 0;
+    pair<Atleta,Deporte> res = as[0];
+    while(i < as.size()){
+        if(as[i].first.capacidad(as[i].second) <= res.first.capacidad(res.second)){
+            res = as[i];
+        }
+        i++;
+    }
+    return res.first;
+}
+
 void siFinalizadaEsta2Finalizo1(Competencia &c1,const Competencia &c2){
     int i = 0;
     vector<int> rank_to_pos;
@@ -220,7 +232,7 @@ void JJOO::liuSong(const Atleta &a, const Pais &p) {
         }
         i++;
     }
-    // ahora me fijo las competencias en las que estaba y lo cambio por el nuevo
+    // ahora me fijo las competencias en las que estaba y lo cambio por el nuevo liu song
     i = 0;
     int j = 0;
     vector<Competencia> competencias_con_nuevo_liu;
@@ -246,8 +258,16 @@ void JJOO::liuSong(const Atleta &a, const Pais &p) {
 }
 
 Atleta JJOO::stevenBradbury() const {
-    Atleta ret("Bob esponja", Genero::Masculino, 0, "Pais falso", 0);
-    return ret;
+    Atleta brad("Bob esponja", Genero::Masculino, 0, "Pais falso", 0);
+    int i = 0;
+    vector<pair<Atleta,Deporte>> medallistas_de_oro;
+    while(i < competenciasFinalizadasConOroEnPodio().size()){
+        medallistas_de_oro.push_back(make_pair(competenciasFinalizadasConOroEnPodio()[i].ranking()[0],
+                                               competenciasFinalizadasConOroEnPodio()[i].categoria().first));
+        i++;
+    }
+    brad.operator=(elMenosCapaz(medallistas_de_oro));
+    return brad;
 }
 
 bool JJOO::uyOrdenadoAsiHayUnPatron() const {
