@@ -18,7 +18,7 @@ file(GLOB TEST_SOURCES "*.cpp")
 
 # Creamos el ejecutable para correr los tests
 add_executable(correrTests ${TEST_SOURCES} ${TEST_HEADERS} atleta_tests.cpp competencia_tests.cpp jjoo_tests.cpp
-        auxiliares_tests.h)
+        auxiliares_tests.h ../src/auxiliares.cpp ../include/auxiliares.h)
 
 # Necesitamos asociar los archivos del framework de testing
 target_link_libraries(correrTests gtest gtest_main)

@@ -4,7 +4,7 @@
 #include "tipos.h"
 #include "atleta.h"
 #include "competencia.h"
-
+#include "auxiliares.h"
 
 class JJOO {
 
@@ -14,30 +14,16 @@ private:
     vector<vector<Competencia> > _cronograma;
     int _jornadaActual;
 
-    //Auxiliares:
+    //Métodos privados:
+
     int cantDeMedallas(const Atleta &a) const;
     int cantDeCompetencias(const Atleta &a) const;
     vector<Atleta> atletasDelPais(const Pais &p) const;
-    bool perteneceCompetenciaEnCrono(const Competencia &c, const vector<Competencia> &cs) const;
-    void finaliza(Competencia &c);
     vector<int> diasConMedalla(const Pais &p) const;
     int masDiasSinMedalla(const Pais p) const;
     int maxDiasSinMedalla(const vector<Pais> &ps) const;
-    vector<Pais> paisesDeLosJuegos(const vector<Atleta> &as) const;
-    Atleta elMenosCapaz(const vector<pair<Atleta,Deporte>> &as) const;
-    void siFinalizadaEsta2Finalizo1(Competencia &c1,const Competencia &c2);
-    bool perteneceAtletaEnCompe(const Atleta &a, const Competencia &c) const;
-    bool perteneceAtletaEnAlgunaCompe(const Atleta &a) const;
-    int cantidadDeRepes(const vector<Pais> &ps , const Pais &p) const;
-    Pais elMejorDelDia(const vector<Competencia> &cs) const;
-    Pais masRepetido(const vector<Pais> &ps) const;
-    bool noEsta(const vector<Atleta> &as, const Pais &p) const;
-    vector<Atleta> filtrarPaisesRepetidos(const vector<Atleta> &as) const;
-    vector<pair<Pais, vector<int>>> sacarElemento(const vector<pair<Pais, vector<int>>> &ms, const pair<Pais, vector<int>> &e) const;
-    bool esMejor(const vector<int> &a, const vector<int> &b) const;
-    vector<pair<Pais, vector<int>>> ordenarMedallero(vector<pair<Pais, vector<int>>> &ms) const;
 
-    //end auxiliares
+    //End
 
     friend class jjoo_tests_competencias_al_transcurrir_un_dia_Test;
 

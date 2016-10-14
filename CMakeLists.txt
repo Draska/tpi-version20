@@ -13,9 +13,9 @@ include_directories(../include)
 # Ahora todos los sources (*.cpp)
 file(GLOB SOURCES "src/*.cpp")
 
-add_executable(tpi ${SOURCES})
+add_executable(tpi ${SOURCES} src/auxiliares.cpp include/auxiliares.h)
 
-add_library(src ${SOURCES})
+add_library(src ${SOURCES} src/auxiliares.cpp include/auxiliares.h)
 
 # CMake anda a buscar lo que hay en el directorio 'tests'!
 add_subdirectory(tests)

@@ -2,21 +2,11 @@
 
 //Auxiliares:
 
-bool Competencia::perteneceAtletaEnCompe(const Atleta &a, const Competencia &c) const {
-    int i = 0;
-    bool res = false;
-    while (i < c.participantes().size() && !res){
-        res = a.operator==(c.participantes()[i]);
-        i++;
-    }
-    return res;
-}
-
-bool Competencia::fueControladoYDioIgual(const pair<Atleta, bool> &a, const Competencia &c) const {
+bool Competencia::fueControladoYDioIgual(const pair<Atleta, bool> &a) const {
     bool res = false;
     int i = 0;
-    while (i < c.participantes().size() && !res){
-        res = a.first.operator==(c.participantes()[i]) && a.second == c.leDioPositivo(c.participantes()[i]);
+    while (i < participantes().size() && !res){
+        res = a.first.operator==(participantes()[i]) && a.second == leDioPositivo(participantes()[i]);
         i++;
     }
     return res;
@@ -166,7 +156,7 @@ bool Competencia::operator==(const Competencia &c) const {
         res = true;
         if (finalizada() && lesTocoControlAntiDoping().size() == c.lesTocoControlAntiDoping().size()){
             while (i < lesTocoControlAntiDoping().size() && res){
-                res = fueControladoYDioIgual(_lesTocoControlAntiDoping[i], c);
+                res = c.fueControladoYDioIgual(_lesTocoControlAntiDoping[i]);
                 i++;
             }
         } else if (finalizada()){

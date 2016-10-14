@@ -3,7 +3,6 @@
 
 #include "tipos.h"
 
-
 class Atleta {
 
 private:
