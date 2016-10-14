@@ -15,15 +15,18 @@ private:
     int _jornadaActual;
 
     //Auxiliares:
-
-    Atleta elMenosCapaz(const vector<pair<Atleta,Deporte>> &as);
+    vector<int> diasConMedalla(const Pais &p) const;
+    int masDiasSinMedalla(const Pais p) const;
+    int maxDiasSinMedalla(const vector<Pais> &ps) const;
+    vector<Pais> paisesDeLosJuegos(const vector<Atleta> &as) const;
+    Atleta elMenosCapaz(const vector<pair<Atleta,Deporte>> &as) const;
     void siFinalizadaEsta2Finalizo1(Competencia &c1,const Competencia &c2);
-    bool perteneceAtletaEnCompe(const Atleta &a, const Competencia &c);
-    bool perteneceAtletaEnJuego(const Atleta &a, const JJOO &j);
-    int cantidadDeRepes(const vector<Pais> &ps , const Pais &p);
-    Pais elMejorDelDia(const vector<Competencia> &cs);
-    Pais masRepetido(const vector<Pais> &ps);
-
+    bool perteneceAtletaEnCompe(const Atleta &a, const Competencia &c) const;
+    bool perteneceAtletaEnJuego(const Atleta &a, const JJOO &j) const;
+    int cantidadDeRepes(const vector<Pais> &ps , const Pais &p) const;
+    Pais elMejorDelDia(const vector<Competencia> &cs) const;
+    Pais masRepetido(const vector<Pais> &ps) const;
+    //end auxiliares
     friend class jjoo_tests_competencias_al_transcurrir_un_dia_Test;
 
     friend class jjoo_tests_competencias_al_transcurrir_dos_dias_Test;
