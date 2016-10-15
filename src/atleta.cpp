@@ -1,13 +1,12 @@
 #include "../include/atleta.h"
 
-
 Atleta::Atleta(const string &n, const Genero &g, const int &a, const Pais &p, const int &c) {
     _nombre = n;
     _genero = g;
     _anioNacimiento = a;
     _nacionalidad = p;
     _ciaNumber = c;
-    pair<Deporte, int> standard;
+    pair<Deporte, int> standard; // aca tenemos que setear la variable _deportes a esto
     standard = make_pair("Tenis",50);
 }
 
