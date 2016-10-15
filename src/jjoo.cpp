@@ -345,8 +345,6 @@ void JJOO::transcurrirDia() { // esta estaba mal max, 1) tenias que fijarte solo
     }
 }
 
-
-
 void JJOO::mostrar(std::ostream &os) const {
 }
 
