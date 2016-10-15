@@ -6,13 +6,15 @@ Atleta atletaProdigio(const JJOO &j) const {
     Atleta crack = j.competenciasFinalizadasConOroEnPodio()[0].ranking()[0];
     // estado E1;
     // vale crack == Campeon(competenciasConOroEnPodio(j)[0]);
-    int i = 0;
+    int i = 1; //el cero ya arranca en crack, asi que no hace falta mirarlo. Creeme, simplifica las cosas.
+    int n = j.competenciasFinalizadasConOroEnPodio().size();
     // estado E2;
-    // vale crack == crack@E1 && i == 0;
-    // Pc: crack == crack@E1 && i == 0;
-    while (i < j.competenciasFinalizadasConOroEnPodio().size()){ //Bw: i < |competenciasConOroEnPodio(j)|
-        // I: 0 <= i < |competenciasConOroEnPodio(j)| &&
-        // (forAll i)****anoNacimiento(Campeon(competenciasConOroEnPodio(j)[i])) <= anoNacimiento(crack); el **** esta abajo
+    // vale crack == crack@E1 && i == 1 && n == |competenciasConOroEnPodio(j)|;
+    // Pc: crack == crack@E1 && i == 1 && n == |competenciasConOroEnPodio(j)|;
+    while (i < n){ //Bw: i < n
+        // I: 1 <= i < n &&
+        // (forAll k<-[0..i))anioNacimiento(Campeon(competenciasConOroEnPodio(j)[k])) <= anoNacimiento(crack);
+        //------------Aclaro lo de arriba: todos los que ya pase, tienen que cumplir la expresión. BORRAR ESTA LINEA----
         // v: |competenciasConOroEnPodio(j)| - i;
         // c: 0;
         // estado C0
@@ -41,5 +43,8 @@ Atleta atletaProdigio(const JJOO &j) const {
     // estado E4
     // vale i == i@E3 && res == crack@E3;
 }
-
 // Demostrar el while, y el if.
+// Pc -> I:
+// i == 0 -> 0 <= i < |competenciasConOroEnPodio(j)|;
+// crack == Campeon(competenciasConOroEnPodio(j)[0]) ->
+// anoNacimiento(Campeon(competenciasConOroEnPodio(j)[i])) <= anoNacimiento(crack);
