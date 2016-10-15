@@ -332,7 +332,6 @@ vector<Pais> JJOO::sequiaOlimpica() const {
 
 void JJOO::transcurrirDia() { // esta estaba mal max, 1) tenias que fijarte solo en el ultimo dia,
     // no ir pasando por todos los dias, chequea la especificacion.
-    // 2) si es el ultimo dia se rompia, por eso le meti el if. Había pasado lo mismo en el TP JAJAJ
     int i = 0;
     while(i < cronograma(jornadaActual()).size()){
         if (!cronograma(i)[jornadaActual()].finalizada()){
@@ -372,7 +371,8 @@ bool JJOO::operator==(const JJOO &j) const {
                 jornadaActual() == j.jornadaActual() &&
                 atletas().size() == j.atletas().size() &&
                 perteneceAtletaEnAlgunaCompe(j.atletas()[i])) { //Cambie el nombre de mi auxiliar, sigue funcando? no la miré.
-            res = true;
+            res = true; // no, xq quiero ver que los atletas de este juego pertenecen a compes del otro juego...
+            // ese aux no se que hace, xq no dice qu ejuego toma, para mirar competencias, y no es metodo de jjoo.
         } else {
             res = false;
         }

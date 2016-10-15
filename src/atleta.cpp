@@ -6,8 +6,8 @@ Atleta::Atleta(const string &n, const Genero &g, const int &a, const Pais &p, co
     _anioNacimiento = a;
     _nacionalidad = p;
     _ciaNumber = c;
-    pair<Deporte, int> standard; // aca tenemos que setear la variable _deportes a esto
-    standard = make_pair("Tenis",50);
+    pair standard = make_pair("Tenis",50);
+    _deportes.push_back(standard);
 }
 
 string Atleta::nombre() const {
@@ -65,8 +65,7 @@ Deporte Atleta::especialidad() const {
 }
 
 void Atleta::entrenarNuevoDeporte(const Deporte &d, const int &c) {
-    pair<Deporte, int> nuevo_deporte;
-    nuevo_deporte = make_pair(d, c);
+    pair nuevo_deporte = make_pair(d, c);
     _deportes.push_back(nuevo_deporte); //lugar especifico?
     return;
 }
