@@ -1,7 +1,10 @@
 #ifndef TPI_AUXILIARES_H
 #define TPI_AUXILIARES_H
 
+#include "tipos.h"
+#include "atleta.h"
 #include "competencia.h"
+#include "auxiliares.h"
 
 bool perteneceAtletaEnCompe(const Atleta &a, const Competencia &c) const;
 bool perteneceCompetenciaEnCrono(const Competencia &c, const vector<Competencia> &cs) const;

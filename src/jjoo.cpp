@@ -4,6 +4,18 @@
 
 //Auxiliares:
 
+Competencia JJOO::competenciaDe(const Categoria &c) const {
+    int i = 0;
+    Competencia compe = competencias()[0];
+    while (i < competencias().size()){
+        if (competencias()[i].categoria() == c){
+            compe = competencias()[i];
+        }
+        i++;
+    }
+    return compe;
+}
+
 int JJOO::cantDeMedallas(const Atleta &a) const {
     int i = 0;
     int res = 0;
@@ -91,7 +103,7 @@ int JJOO::maxDiasSinMedalla(const vector<Pais> &ps) const {
 
 ////////////////////////////////////
 
-JJOO::JJOO(const int &a, const vector<Atleta> &as, const vector<vector<Competencia>> &cs){ // falta terminar
+JJOO::JJOO(const int &a, const vector<Atleta> &as, const vector<vector<Competencia>> &cs){
     _anio = a;
     _atletas = as;
     _cronograma = cs;
@@ -162,7 +174,7 @@ vector<pair<Pais, vector<int>>> JJOO::medallero() const { //decime si te gusta ;
     int oro = 0;
     int plata = 0;
     int bronce = 0;
-    vector<pair<Pais, vector<int>>> res;
+    vector<pair<Pais, vector<int>>> medallero;
     while (i < filtrarPaisesRepetidos(atletas()).size()){
         while (j < competencias().size()){
             if (competencias()[j].ranking()[0].nacionalidad() == atletas()[i].nacionalidad()){
@@ -180,13 +192,23 @@ vector<pair<Pais, vector<int>>> JJOO::medallero() const { //decime si te gusta ;
         medallas.push_back(oro);
         medallas.push_back(plata);
         medallas.push_back(bronce);
-        res.push_back(make_pair(atletas()[i].nacionalidad(), medallas));
+        medallero.push_back(make_pair(atletas()[i].nacionalidad(), medallas));
         i++;
     }
-    return ordenarMedallero(res);
+    return ordenarMedallero(medallero);
 }
 
 int JJOO::boicotPorDisciplina(const Categoria &c, const Pais &p) {
+    Competencia compe = competenciaDe(c);
+    vector<Atleta> nuevos_participantes;
+    int i = 0;
+    while (i < compe.participantes().size()){
+        if (compe.participantes()[i].nacionalidad() != p){
+            nuevos_participantes.push_back(compe.participantes()[i]);
+        }
+        i++;
+    }
+    return compe.participantes().size() - nuevos_participantes.size();
 }
 
 vector<Atleta> JJOO::losMasFracasados(const Pais &p) const {
@@ -308,18 +330,18 @@ vector<Pais> JJOO::sequiaOlimpica() const {
     return ret;
 }
 
-void JJOO::transcurrirDia() {
-    _jornadaActual += 1;
-    int i = 1;
-    int j = 0;
-    while (i < jornadaActual()){
-        while(j < cronograma(i).size()){
-            if (!cronograma(i)[j].finalizada()) {
-                finaliza(cronograma(i)[j]);
-            }
-            j++;
+void JJOO::transcurrirDia() { // esta estaba mal max, 1) tenias que fijarte solo en el ultimo dia,
+    // no ir pasando por todos los dias, chequea la especificacion.
+    // 2) si es el ultimo dia se rompia, por eso le meti el if. Había pasado lo mismo en el TP JAJAJ
+    int i = 0;
+    while(i < cronograma(jornadaActual()).size()){
+        if (!cronograma(i)[jornadaActual()].finalizada()){
+            finaliza(cronograma(jornadaActual())[i]);
         }
         i++;
+    }
+    if (jornadaActual() != cantDias()){
+        _jornadaActual += 1;
     }
 }
 

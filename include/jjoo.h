@@ -16,6 +16,7 @@ private:
 
     //Métodos privados:
 
+    Competencia competenciaDe(const Categoria &c) const;
     int cantDeMedallas(const Atleta &a) const;
     int cantDeCompetencias(const Atleta &a) const;
     vector<Atleta> atletasDelPais(const Pais &p) const;

@@ -48,6 +48,7 @@ public:
     Competencia operator=(const Competencia &c);
 
     //Entrada y salida
+
     void mostrar(std::ostream &os) const;
 
     void guardar(std::ostream &os) const;
