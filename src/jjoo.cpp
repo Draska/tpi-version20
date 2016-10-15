@@ -323,6 +323,8 @@ void JJOO::transcurrirDia() {
     }
 }
 
+
+
 void JJOO::mostrar(std::ostream &os) const {
 }
 
