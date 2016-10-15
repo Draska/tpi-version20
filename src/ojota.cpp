@@ -9,15 +9,19 @@ Atleta atletaProdigio(const JJOO &j) const {
     int i = 0;
     // estado E2;
     // vale Pc: crack == crack@E1 && i == 0;
-    while (i < j.competenciasFinalizadasConOroEnPodio().size()){
+    while (i < j.competenciasFinalizadasConOroEnPodio().size()){ //Bw: i < |competenciasConOroEnPodio(j)|
         // estado C0;
-        // I: 0 <= i <|competenciasConOroEnPodio(j)| &&
-        // crack == anoNacimiento(competenciasConOroEnPodio(j)[i]) <= anoNacimiento(crack);
+        // I: 0 <= i < |competenciasConOroEnPodio(j)| &&
+        // anoNacimiento(Campeon(competenciasConOroEnPodio(j)[i])) <= anoNacimiento(crack);
         // v: |competenciasConOroEnPodio(j)| - i;
         // c: 0;
+        // estado C1
+        // vale I && B;
+        // vale Pif: i == i@E2 + 1? && crack == crack@E2 ? no estoy seguro
         if (j.competenciasFinalizadasConOroEnPodio()[i].ranking()[0].anioNacimiento() >= crack.anioNacimiento()){
             crack = j.competenciasFinalizadasConOroEnPodio()[i].ranking()[0];
         }
+        //
         i++;
     }
     return crack;
