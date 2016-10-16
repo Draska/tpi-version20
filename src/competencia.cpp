@@ -141,10 +141,12 @@ void Competencia::cargar(std::istream &is) {
 }
 
 std::ostream &operator<<(std::ostream &os, const Competencia &c) {
+    c.mostrar(os);
     return os;
 }
 
 std::istream &operator>>(std::istream &is, Competencia &c) {
+    c.cargar(is);
     return is;
 }
 
