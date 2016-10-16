@@ -20,6 +20,5 @@ Pais masRepetido(const vector<Pais> &ps) const;
 vector<Pais> paisesDeLosJuegos(const vector<Atleta> &as) const;
 Atleta elMenosCapaz(const vector<pair<Atleta,Deporte>> &as) const;
 void siFinalizadaEsta2Finalizo1(Competencia &c1,const Competencia &c2);
-bool perteneceAtletaEnAlgunaCompe(const Atleta &a) const;
 
 #endif

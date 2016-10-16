@@ -4,6 +4,18 @@
 
 //Auxiliares:
 
+bool JJOO::perteneceAtletaEnAlgunaCompe(const Atleta &a) const{
+    int i = 0;
+    bool res = false;
+    while (i < competencias().size() && !res){
+        if(perteneceAtletaEnCompe(a,competencias()[i])){
+            res = true;
+        }
+        i++;
+    }
+    return res;
+}
+
 Competencia JJOO::competenciaDe(const Categoria &c) const {
     int i = 0;
     Competencia compe = competencias()[0];
@@ -370,9 +382,9 @@ bool JJOO::operator==(const JJOO &j) const {
                 cantDias() == j.cantDias() &&
                 jornadaActual() == j.jornadaActual() &&
                 atletas().size() == j.atletas().size() &&
-                perteneceAtletaEnAlgunaCompe(j.atletas()[i])) { //Cambie el nombre de mi auxiliar, sigue funcando? no la miré.
-            res = true; // no, xq quiero ver que los atletas de este juego pertenecen a compes del otro juego...
-            // ese aux no se que hace, xq no dice qu ejuego toma, para mirar competencias, y no es metodo de jjoo.
+                perteneceAtletaEnAlgunaCompe(j.atletas()[i])) {
+            res = true;
+
         } else {
             res = false;
         }

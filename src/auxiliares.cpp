@@ -75,8 +75,8 @@ bool esMejor(const vector<int> &a, const vector<int> &b) const { // si tenes gan
 }
 
 vector<pair<Pais, vector<int>>> sacarElemento(const vector<pair<Pais, vector<int>>> &ms, const pair<Pais, vector<int>> &e) const {
-    vector<pair<Pais, vector<int>>> limpio; //si sabés cómo inicializarlo vacío, inicializalo vacío así no se indefine si pasan lista vacía.
-    //Y también cambiá el e
+    vector<pair<Pais, vector<int>>> limpio = {};
+    //Y también cambiá el e --- que es e? el elemento?
     int i = 0;
     while (i < ms.size()){
         if (ms[i] != e){

@@ -23,6 +23,7 @@ private:
     vector<int> diasConMedalla(const Pais &p) const;
     int masDiasSinMedalla(const Pais p) const;
     int maxDiasSinMedalla(const vector<Pais> &ps) const;
+    bool perteneceAtletaEnAlgunaCompe(const Atleta &a) const;
 
     //End
 
