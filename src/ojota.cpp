@@ -41,6 +41,8 @@ Atleta atletaProdigio(const JJOO &j) const {
     return crack;
     // estado E4
     // vale i == i@E3 && res == crack@E3;
+    // implica (forAll k<-[0..n))anioNacimiento(Campeon(competenciasConOroEnPodio(j)[k])) =< anoNacimiento(res) &&
+    // res == Campeon(competenciasConOroEnPodio(j)[m])
 }
 // Demostrar el while:
 // Pc -> I:
