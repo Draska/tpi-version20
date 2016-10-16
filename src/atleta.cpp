@@ -109,6 +109,18 @@ void Atleta::entrenarNuevoDeporte(const Deporte &d, const int &c) {
 }
 
 void Atleta::mostrar(std::ostream &os) const {
+    os << "Atleta" << endl;
+    os << "\tNombre: " << nombre() << endl;
+    os << "\tSexo: " << genero() << endl;
+    os << "\tAño de Nac.: " << anioNacimiento() << endl;
+    os << "\tNacionalidad: " << nacionalidad() << endl;
+    os << "\tCiaNumber " << ciaNumber() << endl;
+    os << "\tDeportes y Capacidades: " << endl;
+    int i = 0;
+    while(i < deportes().size()){
+        os << "(" << deportes()[i] << "," << " "<< capacidad(deportes()[i]) << ")" << endl;
+    }
+
 }
 
 void Atleta::guardar(std::ostream &os) const {
