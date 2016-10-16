@@ -1,13 +1,17 @@
 #include "../include/atleta.h"
 
+//Métodos privados:
+
+//Ahora agrego mismosDeportes
+///////////////////////
+
 Atleta::Atleta(const string &n, const Genero &g, const int &a, const Pais &p, const int &c) {
     _nombre = n;
     _genero = g;
     _anioNacimiento = a;
     _nacionalidad = p;
     _ciaNumber = c;
-    pair standard = make_pair("Tenis",50);
-    _deportes.push_back(standard);
+    _deportes.push_back(make_pair("Tenis", 50)); // estamos seguros que esto deja solo Tenis en _deportes? no podria ya tener basura?
 }
 
 string Atleta::nombre() const {
@@ -43,8 +47,8 @@ vector<Deporte> Atleta::deportes() const {
 int Atleta::capacidad(const Deporte &d) const {
     int res = 0;
     int i = 0;
-    while (i < _deportes.size() && res == 0){
-        if (_deportes[i].first == d){
+    while (i < deportes().size() && res == 0){
+        if (deportes()[i] == d){
             res = _deportes[i].second;
         }
         i++;
@@ -53,21 +57,34 @@ int Atleta::capacidad(const Deporte &d) const {
 }
 
 Deporte Atleta::especialidad() const {
-    int i = 0;
-    pair<Deporte, int> res;
+    int i = 1;
+    int best_index = 0;
     while (i < deportes().size()){
-        if (_deportes[i].second > res.second){
-            res = _deportes[i];
+        if (capacidad(deportes()[i]) > capacidad(deportes()[best_index])){
+            best_index = i;
         }
         i++;
     }
-    return res.first;
+    return deportes()[best_index];
 }
 
 void Atleta::entrenarNuevoDeporte(const Deporte &d, const int &c) {
-    pair nuevo_deporte = make_pair(d, c);
-    _deportes.push_back(nuevo_deporte); //lugar especifico?
-    return;
+    int i = 0;
+    bool agregado = false;
+    pair deporte = make_pair(d, c);
+    vector<pair<Deporte, int>> nuevo_deportes;
+    while (i < deportes().size()){
+        if (!agregado && deportes()[i] > d){
+            nuevo_deportes.push_back(deporte);
+            agregado = true;
+        }
+        nuevo_deportes.push_back(_deportes[i]);
+        i++;
+    }
+    if (!agregado){
+        nuevo_deportes.push_back(deporte);
+    }
+    _deportes = nuevo_deportes;
 }
 
 void Atleta::mostrar(std::ostream &os) const {
@@ -88,19 +105,11 @@ std::istream &operator>>(std::istream &is, Atleta &a) {
 }
 
 bool Atleta::operator==(const Atleta &a) const {
-
-    bool res = true;
+    bool res = false;
     int i = 0;
-    if (_deportes.size() == a.deportes().size()) {
-        while (i < _deportes.size() && res) {
-            if (_nombre == a.nombre() && _genero == a.genero() && _anioNacimiento == a.anioNacimiento() &&
-                _nacionalidad == a.nacionalidad() && _ciaNumber == a.ciaNumber()) {
-                res = (_deportes[i].first == a.deportes()[i] && _deportes[i].second == a.capacidad(a.deportes()[i]));
-            }
-            i++;
-        }
-    } else {
-        res = false;
+    if (nombre() == a.nombre() && genero() == a.genero() && anioNacimiento() == a.anioNacimiento() &&
+        nacionalidad() == a.nacionalidad() && ciaNumber() == a.ciaNumber() && deportes().size() == a.deportes().size() && mismosDeportes(a)){
+        res = true;
     }
     return res;
 }
@@ -113,6 +122,4 @@ Atleta Atleta::operator=(const Atleta &a) {
     _genero = a._genero;
     _deportes = a._deportes;
     return (*this);
-} // redefine this atleta como el atleta 'a'
-
-
+}
