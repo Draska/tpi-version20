@@ -2,16 +2,6 @@
 
 //Métodos privados:
 
-bool Competencia::fueControladoYDioIgual(const pair<Atleta, bool> &a) const {
-    bool res = false;
-    int i = 0;
-    while (i < participantes().size() && !res){
-        res = a.first.operator==(participantes()[i]) && a.second == leDioPositivo(participantes()[i]);
-        i++;
-    }
-    return res;
-}
-
 Atleta Competencia::atletaDeCiaNumber(const int &cia_number) const {
     bool stop = false;
     int i = 0;
@@ -32,6 +22,29 @@ bool Competencia::loDescubrenDopado(const Atleta &a) const {
             res = true;
         }
         i++;
+    }
+    return res;
+}
+
+bool Competencia::fueControladoYDioIgual(const pair<Atleta, bool> &a) const {
+    bool res = false;
+    int i = 0;
+    while (i < lesTocoControlAntiDoping().size() && !res){
+        res = a.first.operator==(lesTocoControlAntiDoping()[i]) && a.second == leDioPositivo(participantes()[i]);
+        i++;
+    }
+    return res;
+}
+
+bool Competencia::mismosControlados(const Competencia &c) const {
+    bool res = false;
+    int i = 0;
+    if (lesTocoControlAntiDoping().size() == c.lesTocoControlAntiDoping().size()){
+        res = true;
+        while (i < lesTocoControlAntiDoping().size() && res){
+            res = c.fueControladoYDioIgual(_lesTocoControlAntiDoping[i]);
+            i++;
+        }
     }
     return res;
 }
@@ -152,22 +165,14 @@ bool Competencia::operator==(const Competencia &c) const {
     bool res = false;
     int i = 0;
     if (participantes().size() == c.participantes().size() && categoria() == c.categoria() && finalizada() == c.finalizada()){
-        if (finalizadasYMismosControlados(c)){
-            res = true;
-        }
+        res = true;
         while (i < participantes().size() && res){
             res = perteneceAtletaEnCompe(participantes()[i], c);
             i++;
         }
-        if (finalizada() && lesTocoControlAntiDoping().size() == c.lesTocoControlAntiDoping().size()){
-            while (i < lesTocoControlAntiDoping().size() && res){
-                res = c.fueControladoYDioIgual(_lesTocoControlAntiDoping[i]);
-                i++;
-            }
-        } else if (finalizada()){
-            res = false;
+        if (finalizada() && res){
+            res = mismosControlados(c);
         }
-        i = 0;
     }
     return res;
 }
