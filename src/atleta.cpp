@@ -2,8 +2,27 @@
 
 //Métodos privados:
 
-//Ahora agrego mismosDeportes
-///////////////////////
+bool Atleta::perteneceDeporteEnAtleta(const Deporte &d) const {
+    bool res = false;
+    int i = 0;
+    while (i < deportes().size() && !res){
+        res = deportes()[i] == d;
+        i++;
+    }
+    return res;
+}
+
+bool Atleta::mismosDeportes(const Atleta &a) const {
+    bool res = true;
+    int i = 0;
+    while (i < a.deportes().size() && res){
+        res = perteneceDeporteEnAtleta(a.deportes()[i]);
+        i++;
+    }
+    return res;
+}
+
+/////////////////////////////////
 
 Atleta::Atleta(const string &n, const Genero &g, const int &a, const Pais &p, const int &c) {
     _nombre = n;
@@ -106,9 +125,9 @@ std::istream &operator>>(std::istream &is, Atleta &a) {
 
 bool Atleta::operator==(const Atleta &a) const {
     bool res = false;
-    int i = 0;
     if (nombre() == a.nombre() && genero() == a.genero() && anioNacimiento() == a.anioNacimiento() &&
-        nacionalidad() == a.nacionalidad() && ciaNumber() == a.ciaNumber() && deportes().size() == a.deportes().size() && mismosDeportes(a)){
+        nacionalidad() == a.nacionalidad() && ciaNumber() == a.ciaNumber() && deportes().size() == a.deportes().size()
+        && mismosDeportes(a)){
         res = true;
     }
     return res;

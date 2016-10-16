@@ -14,7 +14,7 @@ private:
     vector<Atleta> _ranking;
     vector<pair<Atleta, bool> > _lesTocoControlAntiDoping;
 
-    //Auxiliares:
+    //Métodos privados:
 
     bool fueControladoYDioIgual(const pair<Atleta, bool> &a) const;
 

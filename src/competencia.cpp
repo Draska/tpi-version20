@@ -1,6 +1,6 @@
 #include "../include/competencia.h"
 
-//Auxiliares:
+//Métodos privados:
 
 bool Competencia::fueControladoYDioIgual(const pair<Atleta, bool> &a) const {
     bool res = false;
@@ -15,7 +15,6 @@ bool Competencia::fueControladoYDioIgual(const pair<Atleta, bool> &a) const {
 //////////////////////////////
 
 Competencia::Competencia(const Deporte &d, const Genero &g, const vector<Atleta> &as) {
-    pair<Deporte, Genero> _categoria;
     _categoria = make_pair(d, g);
     _participantes = as;
     _finalizada = false;
@@ -38,22 +37,24 @@ vector<Atleta> Competencia::ranking() const {
 }
 
 vector<Atleta> Competencia::lesTocoControlAntiDoping() const {
-    vector<Atleta> ret;
+    vector<Atleta> controlados;
     int i = 0;
     while (i < _lesTocoControlAntiDoping.size()){
-        ret.push_back(_lesTocoControlAntiDoping[i].first);
+        controlados.push_back(_lesTocoControlAntiDoping[i].first);
         i++;
     }
-    return ret;
+    return controlados;
 }
 
 bool Competencia::leDioPositivo(const Atleta &a) const {
     int i = 0;
-    while (i < _lesTocoControlAntiDoping.size() && !a.operator==(_lesTocoControlAntiDoping[i].first)){
+    while (i < lesTocoControlAntiDoping().size() && !a.operator==(lesTocoControlAntiDoping()[i])){
         i++;
     }
     return _lesTocoControlAntiDoping[i].second;
 }
+
+// Hasta acá está bien.
 
 void Competencia::finalizar(const vector<int> &posiciones, const vector<pair<int, bool>> &control) {
     _finalizada = true;

@@ -14,6 +14,13 @@ private:
     Genero _genero;
     vector<pair<Deporte, int> > _deportes;
 
+    //Métodos privados:
+
+    bool perteneceDeporteEnAtleta(const Deporte &d) const;
+    bool mismosDeportes(const Atleta &a) const;
+
+    //End
+
 public:
 
     Atleta(const string &n, const Genero &g, const int &a, const Pais &p, const int &c);
