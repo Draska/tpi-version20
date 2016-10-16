@@ -112,7 +112,40 @@ void Atleta::mostrar(std::ostream &os) const {
 }
 
 void Atleta::guardar(std::ostream &os) const {
-    os << "A";
+    os << "A"; //hago uno a uno, asi los cuenta por separado, sino creo que cuentan como una cosa sola
+    os << " "; // me refiero a que "A |" son 3 chars, pero si los hago en una linea es capaz de contar uno solo.
+    os << "|"; // el ejemplo del profe, los hizo por separado, tendra su razon...
+    os << _nombre;
+    os << "|";
+    os << " ";
+    os << "|";
+    os << _genero;
+    os << "|";
+    os << " ";
+    os << _anioNacimiento;
+    os << " ";
+    os << "|";
+    os << _nacionalidad;
+    os << "|";
+    os << " ";
+    os << _ciaNumber;
+    os << " ";
+    os << "["; // voy a empezar la lista de deportes.
+    int i = 0;
+    while(i < _deportes.size()){
+        os << "(";
+        os << "|";
+        os << _deportes[i].first;
+        os << "|";
+        os << ",";
+        os << " ";
+        os << _deportes[i].second;
+        os << ")";
+        os << ",";
+        i++;
+    }
+    os << "]";
+    os << endl;
 
 }
 
@@ -133,7 +166,7 @@ void Atleta::cargar(std::istream &is) {
         is.ignore(2);// "(|"
         is >> _deportes[i].first;
         is.ignore(3);// "|, "
-        i >> _deportes[i].second;
+        is >> _deportes[i].second;
         is.ignore(2); // "),"
         i++;
     }
