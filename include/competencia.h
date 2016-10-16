@@ -17,6 +17,8 @@ private:
     //Métodos privados:
 
     bool fueControladoYDioIgual(const pair<Atleta, bool> &a) const;
+    Atleta atletaDeCiaNumber(const int &cia_number) const;
+    bool loDescubrenDopado(const Atleta &a) const;
 
     //End
 

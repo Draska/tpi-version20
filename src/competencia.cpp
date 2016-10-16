@@ -12,6 +12,30 @@ bool Competencia::fueControladoYDioIgual(const pair<Atleta, bool> &a) const {
     return res;
 }
 
+Atleta Competencia::atletaDeCiaNumber(const int &cia_number) const {
+    bool stop = false;
+    int i = 0;
+    while (i < participantes().size() && !stop){
+        if (participantes()[i].ciaNumber() == cia_number){
+            stop = true;
+        }
+        i++;
+    }
+    return participantes()[i-1];
+}
+
+bool Competencia::loDescubrenDopado(const Atleta &a) const {
+    bool res = false;
+    int i = 0;
+    while (i < lesTocoControlAntiDoping().size() && !res){
+        if (a.operator==(lesTocoControlAntiDoping()[i]) && leDioPositivo(a)){
+            res = true;
+        }
+        i++;
+    }
+    return res;
+}
+
 //////////////////////////////
 
 Competencia::Competencia(const Deporte &d, const Genero &g, const vector<Atleta> &as) {
@@ -54,56 +78,38 @@ bool Competencia::leDioPositivo(const Atleta &a) const {
     return _lesTocoControlAntiDoping[i].second;
 }
 
-// Hasta acá está bien.
-
 void Competencia::finalizar(const vector<int> &posiciones, const vector<pair<int, bool>> &control) {
     _finalizada = true;
-    /////////////////////////// hacemos ranking
     int i = 0;
-    int j = 0;
     while (i < posiciones.size()){
-        while (j < _participantes.size()){
-            if (_participantes[j].ciaNumber() == posiciones[i]){
-                _ranking.push_back(_participantes[j]);
-            }
-            j++;
-        }
+        _ranking.push_back(atletaDeCiaNumber(posiciones[i]));
         i++;
     }
-    ///////////////////////////////////// hacemos leTocoControl
     i = 0;
-    j = 0;
-    while (i < control.size()){
-        while (j < _participantes.size()){
-            if(_participantes[j].ciaNumber() == control[i].first){
-                _lesTocoControlAntiDoping.push_back(make_pair(_participantes[j], control[i].second));
-            }
-            j++;
-        }
+    while (i < control.size()) {
+        _lesTocoControlAntiDoping.push_back(make_pair(atletaDeCiaNumber(control[i].first), control[i].second));
         i++;
     }
-    /////////////////////////////////////////// listo
 }
 
 void Competencia::linfordChristie(const int &n) {
     int i = 0;
     vector<Atleta> kickeamos_linford;
-    while (i < _participantes.size()){
-        if(_participantes[i].ciaNumber() != n){
-            kickeamos_linford.push_back(_participantes[i]);
+    while (i < participantes().size()){
+        if(participantes()[i].ciaNumber() != n){
+            kickeamos_linford.push_back(participantes()[i]);
         }
         i++;
     }
-    _participantes = kickeamos_linford; // la nueva lista de participantes
-    _finalizada = false;
+    _participantes = kickeamos_linford;
 }
 
 bool Competencia::gananLosMasCapaces() const {
     bool res = true;
     int i = 0;
-    Deporte d = _categoria.first;
-    while (i + 1 < _ranking.size()){
-        if(_ranking[i].capacidad(d) < _ranking[i+1].capacidad(d)){
+    Deporte d = categoria().first;
+    while (i + 1 < ranking().size() && res){
+        if(ranking()[i].capacidad(d) < ranking()[i+1].capacidad(d)){
             res = false;
         }
         i++;
@@ -114,24 +120,16 @@ bool Competencia::gananLosMasCapaces() const {
 void Competencia::sancionarTramposos() {
     vector<Atleta> no_hay_adictos;
     int i = 0;
-    int j = 0;
-    bool no_parece_dopado = false;
-    _finalizada = true;
-    while(i < _ranking.size()){
-        while (j < _lesTocoControlAntiDoping.size()){
-            if(!_ranking[i].operator==(_lesTocoControlAntiDoping[j].first) || !leDioPositivo(_ranking[i])){
-                no_parece_dopado = true;
-            }
-            j++; // el if chequea que no esta en control, para cada j. Ó que le dio negativo el antiDoping.
-        }
-        if(no_parece_dopado){
-            no_hay_adictos.push_back(_ranking[i]); //si sale de bucle con j, y no parece dopado, entra a la lista donde
-            //no hay adictos
+    while (i < ranking().size()){
+        if (!loDescubrenDopado(ranking()[i])){
+            no_hay_adictos.push_back(ranking()[i]);
         }
         i++;
     }
     _ranking = no_hay_adictos;
 }
+
+// Hasta acá está bien.
 
 void Competencia::mostrar(std::ostream &os) const {
 }
@@ -154,7 +152,13 @@ bool Competencia::operator==(const Competencia &c) const {
     bool res = false;
     int i = 0;
     if (participantes().size() == c.participantes().size() && categoria() == c.categoria() && finalizada() == c.finalizada()){
-        res = true;
+        if (finalizadasYMismosControlados(c)){
+            res = true;
+        }
+        while (i < participantes().size() && res){
+            res = perteneceAtletaEnCompe(participantes()[i], c);
+            i++;
+        }
         if (finalizada() && lesTocoControlAntiDoping().size() == c.lesTocoControlAntiDoping().size()){
             while (i < lesTocoControlAntiDoping().size() && res){
                 res = c.fueControladoYDioIgual(_lesTocoControlAntiDoping[i]);
@@ -164,10 +168,6 @@ bool Competencia::operator==(const Competencia &c) const {
             res = false;
         }
         i = 0;
-        while (i < participantes().size() && res){
-            res = perteneceAtletaEnCompe(participantes()[i], c);
-            i++;
-        }
     }
     return res;
 }
