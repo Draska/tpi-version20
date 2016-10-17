@@ -1,6 +1,6 @@
 #include "../include/auxiliares.h"
 
-bool perteneceAtletaEnCompe(const Atleta &a, const Competencia &c) const {
+bool perteneceAtletaEnCompe(const Atleta &a, const Competencia &c) {
     int i = 0;
     bool res = false;
     while (i < c.participantes().size() && !res){
@@ -12,7 +12,7 @@ bool perteneceAtletaEnCompe(const Atleta &a, const Competencia &c) const {
     return res;
 }
 
-bool perteneceCompetenciaEnCrono(const Competencia &c, const vector<Competencia> &cs) const {
+bool perteneceCompetenciaEnCrono(const Competencia &c, const vector<Competencia> &cs) {
     int i = 0;
     bool res = false;
     while(i < cs.size() && !res){
@@ -33,7 +33,7 @@ void finaliza(Competencia &c){
     c.finalizar(pos_to_num,controlo_uno);
 }
 
-vector<pair<Pais, vector<int>>> ordenarMedallero(vector<pair<Pais, vector<int>>> &ms) const {
+vector<pair<Pais, vector<int>>> ordenarMedallero(vector<pair<Pais, vector<int>>> &ms) {
     vector<pair<Pais, vector<int>>> ordenado;
     pair<Pais, vector<int>> max_parcial;
     int ya_esta = 0;
@@ -58,7 +58,7 @@ vector<pair<Pais, vector<int>>> ordenarMedallero(vector<pair<Pais, vector<int>>>
     return ordenado;
 };
 
-bool esMejor(const vector<int> &a, const vector<int> &b) const { // si tenes ganas chequeá si me falto algún caso
+bool esMejor(const vector<int> &a, const vector<int> &b) { // si tenes ganas chequeá si me falto algún caso
     bool res = true;
     if (a[0] < b[0]){
         res = false;
@@ -74,7 +74,7 @@ bool esMejor(const vector<int> &a, const vector<int> &b) const { // si tenes gan
     return res;
 }
 
-vector<pair<Pais, vector<int>>> sacarElemento(const vector<pair<Pais, vector<int>>> &ms, const pair<Pais, vector<int>> &e) const {
+vector<pair<Pais, vector<int>>> sacarElemento(const vector<pair<Pais, vector<int>>> &ms, const pair<Pais, vector<int>> &e){
     vector<pair<Pais, vector<int>>> limpio = {};
     //Y también cambiá el e --- que es e? el elemento?
     int i = 0;
@@ -87,7 +87,7 @@ vector<pair<Pais, vector<int>>> sacarElemento(const vector<pair<Pais, vector<int
     return limpio;
 };
 
-bool noEsta(const vector<Atleta> &as, const Pais &p) const {
+bool noEsta(const vector<Atleta> &as, const Pais &p){
     bool res = true;
     int i = 0;
     while (i < as.size() && res){
@@ -97,7 +97,7 @@ bool noEsta(const vector<Atleta> &as, const Pais &p) const {
     return res;
 }
 
-vector<Atleta> filtrarPaisesRepetidos(const vector<Atleta> &as) const {
+vector<Atleta> filtrarPaisesRepetidos(const vector<Atleta> &as){
     vector<Atleta> limpios;
     int i = 0;
     while (i < as.size()){
@@ -109,7 +109,7 @@ vector<Atleta> filtrarPaisesRepetidos(const vector<Atleta> &as) const {
     return limpios;
 }
 
-int cantidadDeRepes(const vector<Pais> &ps , const Pais &p) const {
+int cantidadDeRepes(const vector<Pais> &ps , const Pais &p){
     int res = 0;
     int i = 0;
     while(i < ps.size()){
@@ -121,7 +121,7 @@ int cantidadDeRepes(const vector<Pais> &ps , const Pais &p) const {
     return res;
 }
 
-Pais masRepetido(const vector<Pais> &ps) const {
+Pais masRepetido(const vector<Pais> &ps){
     int i = 0;
     Pais res = "Uganda"; //hay que ver si eso no afecta el caso lista vacia
     while(i < ps.size()){
@@ -133,7 +133,7 @@ Pais masRepetido(const vector<Pais> &ps) const {
     return res;
 }
 
-Pais elMejorDelDia(const vector<Competencia> &cs) const {
+Pais elMejorDelDia(const vector<Competencia> &cs){
     Pais res;
     vector<Pais> campeones_del_dia;
     int i = 0;
@@ -161,7 +161,7 @@ void siFinalizadaEsta2Finalizo1(Competencia &c1,const Competencia &c2){ //esta n
     }
 }
 
-vector<Pais> paisesDeLosJuegos(const vector<Atleta> &as) const {
+vector<Pais> paisesDeLosJuegos(const vector<Atleta> &as){
     int i = 0;
     int j;
     bool aparece;
@@ -185,7 +185,7 @@ vector<Pais> paisesDeLosJuegos(const vector<Atleta> &as) const {
     return paises_de_los_games;
 }
 
-Atleta elMenosCapaz(const vector<pair<Atleta,Deporte>> &as) const {
+Atleta elMenosCapaz(const vector<pair<Atleta,Deporte>> &as){
     int i = 0;
     pair<Atleta,Deporte> res = as[0];
     while(i < as.size()){
