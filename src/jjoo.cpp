@@ -213,7 +213,7 @@ vector<Atleta> JJOO::dePaseo() const {
         i++;
     }
     return fueron_de_paseo;
-} //te gusta más así?
+}
 
 vector<pair<Pais, vector<int>>> JJOO::medallero() const { //decime si te gusta ;) grrr
     int i = 0;

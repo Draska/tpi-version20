@@ -1,6 +1,6 @@
 #include "../include/jjoo.h"
 
-/*Atleta atletaProdigio(const JJOO &j) const {
+Atleta atletaProdigio(const JJOO &j) const {
     // estado E0;
     // vale REQ: |competenciasConOroEnPodio(j)| > 0;
     int m = 0; Atleta crack = j.competenciasFinalizadasConOroEnPodio()[m].ranking()[0];
