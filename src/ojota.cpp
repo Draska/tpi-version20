@@ -3,14 +3,16 @@
 Atleta atletaProdigio(const JJOO &j) const {
     // estado E0;
     // vale REQ: |competenciasConOroEnPodio(j)| > 0;
-    int m = 0; Atleta crack = j.competenciasFinalizadasConOroEnPodio()[m].ranking()[0];
+    int m = 0;
+    Atleta crack = j.competenciasFinalizadasConOroEnPodio()[m].ranking()[0];
     // estado E1;
     // vale m == 0 && crack == Campeon(competenciasConOroEnPodio(j)[0]);
     int i = 1; //el cero ya arranca en crack, asi que no hace falta mirarlo. Creeme, simplifica las cosas.
     int n = j.competenciasFinalizadasConOroEnPodio().size();
     // estado E2;
-    // vale crack == crack@E1 && i == 1 && m == m@E1 && n == |competenciasConOroEnPodio(j)|;
-    // Pc: crack == crack@E1 && i == 1 && m == m@E1 && n == |competenciasConOroEnPodio(j)| && n > 0(por REQ);
+    // vale m == m@E1 && crack == crack@E1 && i == 1 && n == |competenciasConOroEnPodio(j)|;
+    // implica m == 0 && crack == Campeon(competenciasConOroEnPodio(j)[0]); (Por E1)
+    // Pc: m == 0 && crack == Campeon(competenciasConOroEnPodio(j)[0]) && i == 1 && n == |competenciasConOroEnPodio(j)| && n > 0; (Por REQ)
     while (i < n){ //Bc: i < n
         // I: 1 =< i =< n && crack == Campeon(competenciasConOroEnPodio(j)[m]) && 0 =< m =< i &&
         // (forAll k<-[0..i))anioNacimiento(Campeon(competenciasConOroEnPodio(j)[k])) <= anoNacimiento(crack);
@@ -23,7 +25,8 @@ Atleta atletaProdigio(const JJOO &j) const {
             //Bif: anioNacimiento(Campeon(competenciasConOroEnPodio(j)[i])) >= anoNacimiento(crack@C0);
             // estado Eif0
             // vale Pif && Bif;
-            m = i; crack = j.competenciasFinalizadasConOroEnPodio()[m].ranking()[0];
+            m = i;
+            crack = j.competenciasFinalizadasConOroEnPodio()[m].ranking()[0];
             // estado Eif1
             // vale m == i && crack == Campeon(competenciasConOroEnPodio(j)[i]) && Bif;
         }
@@ -45,13 +48,17 @@ Atleta atletaProdigio(const JJOO &j) const {
 
 // Demostrar el while:
 
-// Pc: crack == crack@E1 && i == 1 && m == m@E1 && n == |competenciasConOroEnPodio(j)| && n > 0 (por REQ);
+// Pc: m == 0 && crack == Campeon(competenciasConOroEnPodio(j)[0]) && i == 1 && n == |competenciasConOroEnPodio(j)| && n > 0; (Por REQ)
 // I: 1 =< i =< n && crack == Campeon(competenciasConOroEnPodio(j)[m]) && 0 =< m =< i
 // v: |competenciasConOroEnPodio(j)| - i;
 // c: 0;
 // Qc: Qif && (forAll k<-[0..n))anioNacimiento(Campeon(competenciasConOroEnPodio(j)[k])) <= anoNacimiento(crack);
 
 // Pc -> I:
+
+// Pc: crack == crack@E1 && i == 1 && m == m@E1 && n == |competenciasConOroEnPodio(j)| && n > 0 (por REQ);
+//
+// I: 1 =< i =< n && crack == Campeon(competenciasConOroEnPodio(j)[m]) && 0 =< m =< i
 
 // i == 1 && n > 0 -> 1 =< i =< n;
 // crack == Campeon(competenciasConOroEnPodio(j)[0]) ->
@@ -98,3 +105,18 @@ Atleta atletaProdigio(const JJOO &j) const {
 
 //RAMA FALSE Pif && ¬ Bif :
 //
+
+/*
+Atleta atletaProdigio(const JJOO &j) const {
+    Atleta crack = j.competenciasFinalizadasConOroEnPodio()[0].ranking()[0];
+    int i = 1;
+    int n = j.competenciasFinalizadasConOroEnPodio().size();
+    while (i < n){
+        if (j.competenciasFinalizadasConOroEnPodio()[i].ranking()[0].anioNacimiento() >= crack.anioNacimiento()){
+                crack = j.competenciasFinalizadasConOroEnPodio()[i].ranking()[0];
+        }
+        i++;
+    }
+    return crack;
+}
+*/

@@ -12,7 +12,7 @@ void finaliza(Competencia &c);
 bool esMejor(const vector<int> &a, const vector<int> &b);
 vector<pair<Pais, vector<int>>> ordenarMedallero(vector<pair<Pais, vector<int>>> &ms);
 vector<pair<Pais, vector<int>>> sacarElemento(const vector<pair<Pais, vector<int>>> &ms, const pair<Pais, vector<int>> &e);
-bool noEsta(const vector<Atleta> &as, const Pais &p);
+bool noEstaRepetido(const vector<Atleta> &as, const Pais &p);
 vector<Atleta> filtrarPaisesRepetidos(const vector<Atleta> &as);
 int cantidadDeRepes(const vector<Pais> &ps , const Pais &p);
 Pais elMejorDelDia(const vector<Competencia> &cs);

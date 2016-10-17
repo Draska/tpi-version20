@@ -58,7 +58,6 @@ bool mismos(const vector<T> &l1, const vector<T> &l2) {
 
         todos_iguales &= (c1 == c2);
     }
-
     return (l1.size() == l2.size()) && todos_iguales;
 }
 

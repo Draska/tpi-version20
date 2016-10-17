@@ -76,7 +76,7 @@ bool esMejor(const vector<int> &a, const vector<int> &b) { // si tenes ganas che
 
 vector<pair<Pais, vector<int>>> sacarElemento(const vector<pair<Pais, vector<int>>> &ms, const pair<Pais, vector<int>> &e){
     vector<pair<Pais, vector<int>>> limpio = {};
-    //Y también cambiá el e --- que es e? el elemento?
+    //Y también cambiá el e --- que es e? el elemento? --- si
     int i = 0;
     while (i < ms.size()){
         if (ms[i] != e){
@@ -87,11 +87,14 @@ vector<pair<Pais, vector<int>>> sacarElemento(const vector<pair<Pais, vector<int
     return limpio;
 };
 
-bool noEsta(const vector<Atleta> &as, const Pais &p){
+bool noEstaRepetido(const vector<Atleta> &as, const Pais &p){
     bool res = true;
+    int contador = 0;
     int i = 0;
     while (i < as.size() && res){
-        res = as[i].nacionalidad() != p;
+        if (as[i].nacionalidad() == p && contador > 1){
+            res = false;
+        }
         i++;
     }
     return res;
@@ -101,7 +104,7 @@ vector<Atleta> filtrarPaisesRepetidos(const vector<Atleta> &as){
     vector<Atleta> limpios;
     int i = 0;
     while (i < as.size()){
-        if (noEsta(as, as[i].nacionalidad())){
+        if (noEstaRepetido(as, as[i].nacionalidad())){
             limpios.push_back(as[i]);
         }
         i++;

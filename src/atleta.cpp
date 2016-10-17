@@ -93,18 +93,18 @@ Deporte Atleta::especialidad() const {
 void Atleta::entrenarNuevoDeporte(const Deporte &d, const int &c) {
     int i = 0;
     bool agregado = false;
-    pair<Deporte, int> de_porte = make_pair(d, c);
+    pair<Deporte, int> deporte = make_pair(d, c);
     vector<pair<Deporte, int>> nuevo_deportes;
     while (i < deportes().size()){
         if (!agregado && deportes()[i] > d){ // si d < deportes[i] va en ese lugar de la lista. no pierde el orden.
-            nuevo_deportes.push_back(de_porte);
+            nuevo_deportes.push_back(deporte);
             agregado = true;
         }
         nuevo_deportes.push_back(_deportes[i]);// siempre se agregan los deportes que ya sabia(pese a que no entre en el if.)
         i++;
     }
     if (!agregado){ // si d > deportes[i] siempre, pero no estaba agregado, va al final de todos.
-        nuevo_deportes.push_back(de_porte);
+        nuevo_deportes.push_back(deporte);
     }
     _deportes = nuevo_deportes;
 }

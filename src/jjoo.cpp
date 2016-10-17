@@ -181,7 +181,7 @@ vector<Competencia> JJOO::competencias() const {
     int i = 0;
     int j = 0;
     vector<Competencia> _competencias;
-    while (i < _cronograma.size()) {
+    while (i < cantDias()) {
         while (j < _cronograma[i].size()) {
             _competencias.push_back(_cronograma[i][j]);
             j++;
