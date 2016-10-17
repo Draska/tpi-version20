@@ -113,6 +113,41 @@ int JJOO::maxDiasSinMedalla(const vector<Pais> &ps) const {
     return res;
 }
 
+bool JJOO::mismosAtletas(const JJOO &j) const {
+    bool res = true;
+    int i = 0;
+    while(i < j.atletas().size() && res) {
+        if (perteneceAtletaEnAlgunaCompe(j.atletas()[i])) {
+            res = true;
+        }
+        i++;
+    }
+    return res;
+}
+
+bool JJOO::mismasCompetencias(const JJOO &j, const int &d) const {
+    bool res = false;
+    int i = 0;
+    if (cronograma(d).size() == j.cronograma(d).size()){
+        res = true;
+        while (i < cronograma(d).size() && res){
+            res = perteneceCompetenciaEnCrono(cronograma(d)[i],j.cronograma(d));
+            i++;
+        }
+    }
+    return res;
+}
+
+bool JJOO::mismosCronogramas(const JJOO &j) const {
+    bool res = true;
+    int i = 0;
+    while (i < cantDias() && res){
+        res = mismasCompetencias(j, i);
+        i++;
+    }
+    return res;
+}
+
 ////////////////////////////////////
 
 JJOO::JJOO(const int &a, const vector<Atleta> &as, const vector<vector<Competencia>> &cs){
@@ -374,37 +409,10 @@ std::istream &operator>>(std::istream &is, JJOO &j) {
 }
 
 bool JJOO::operator==(const JJOO &j) const {
-    bool res = true;
-    int i = 0;
-    int k = 0;
-    while(i < atletas().size() && res) {
-        if (anio() == j.anio() &&
-                cantDias() == j.cantDias() &&
-                jornadaActual() == j.jornadaActual() &&
-                atletas().size() == j.atletas().size() &&
-                perteneceAtletaEnAlgunaCompe(j.atletas()[i])) {
-            res = true;
-
-        } else {
-            res = false;
-        }
-        i++;
-
-    }
-    //solo si el resto dio igual, me pongo a mirar los cronogramas
-    if(res){
-        i = 0;
-        while (i < cantDias()){
-            while(k < cronograma(i).size() && res) {
-                if (cronograma(i).size() == j.cronograma(i).size()) {
-                    res = perteneceCompetenciaEnCrono(cronograma(i)[k],j.cronograma(i));
-                } else {
-                    res = false;
-                }
-                k++;
-            }
-            i++;
-        }
+    bool res = false;
+    if (anio() == j.anio() && cantDias() == j.cantDias() && jornadaActual() == j.jornadaActual() &&
+        atletas().size() == j.atletas().size()){
+        res = mismosAtletas(j) && mismosCronogramas(j);
     }
     return res;
 }
