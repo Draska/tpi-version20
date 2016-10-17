@@ -124,7 +124,7 @@ void Atleta::mostrar(std::ostream &os) const {
 }
 
 void Atleta::guardar(std::ostream &os) const {
-    os << "A"; //jajaja okey
+    os << "A";
     os << " ";
     os << "|";
     os << _nombre;
@@ -164,7 +164,7 @@ void Atleta::cargar(std::istream &is) {
     is.ignore(3); // ignora "A |"
     is >> _nombre; // asi es como deberia ser. el de genero no se que le pasa.
     is.ignore(3); // ignora "| |"
-    is ;operator>>; _genero; //no se xq pasa esto, no deberia. mucha duda. mucha duda.
+    is ;operator>>; _genero; //Tiene problemas con genero.
     is.ignore(2); // ignora "| "
     is >> _anioNacimiento;
     is.ignore(2); // ignora " |"
