@@ -14,7 +14,7 @@ Atleta atletaProdigio(const JJOO &j) const {
     while (i < n){ //Bc: i < n
         // I: 1 =< i =< n && crack == Campeon(competenciasConOroEnPodio(j)[m]) && 0 =< m =< i
         // (forAll k<-[0..i))anioNacimiento(Campeon(competenciasConOroEnPodio(j)[k])) <= anoNacimiento(crack);
-        //------------Aclaro lo de arriba: todos los que ya pase, tienen que cumplir la expresión. BORRAR ESTA LINEA----
+        //------------Aclaro lo de arriba: todos los que ya pase, tienen que cumplir la expresion. BORRAR ESTA LINEA----
         // v: |competenciasConOroEnPodio(j)| - i;
         // c: 0;
         // estado C0
@@ -41,6 +41,8 @@ Atleta atletaProdigio(const JJOO &j) const {
     return crack;
     // estado E4
     // vale i == i@E3 && res == crack@E3;
+    // implica (forAll k<-[0..n))anioNacimiento(Campeon(competenciasConOroEnPodio(j)[k])) =< anoNacimiento(res) &&
+    // res == Campeon(competenciasConOroEnPodio(j)[m])
 }
 // Demostrar el while:
 // Pc -> I:

@@ -142,8 +142,6 @@ void Competencia::sancionarTramposos() {
     _ranking = no_hay_adictos;
 }
 
-// Hasta acá está bien.
-
 void Competencia::mostrar(std::ostream &os) const {
 }
 
@@ -154,10 +152,12 @@ void Competencia::cargar(std::istream &is) {
 }
 
 std::ostream &operator<<(std::ostream &os, const Competencia &c) {
+    c.mostrar(os);
     return os;
 }
 
 std::istream &operator>>(std::istream &is, Competencia &c) {
+    c.cargar(is);
     return is;
 }
 

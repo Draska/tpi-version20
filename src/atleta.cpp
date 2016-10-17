@@ -31,7 +31,10 @@ Atleta::Atleta(const string &n, const Genero &g, const int &a, const Pais &p, co
     _nacionalidad = p;
     _ciaNumber = c;
     _deportes.push_back(make_pair("Tenis", 50)); // estamos seguros que esto deja solo Tenis en _deportes? no podria ya tener basura?
-}
+}                                                //R: si, esto es para crear un chabon de cero, no existe nada antes, si queres
+// podes reemplazar esa linea con: vector<pair<Deporte,int>> depo_inicial = {make_pair("Tenis",50)};
+//                                 _deportes = depo_inicial;
+// RR: claro pero lo que digo es si _deportes no podria ya tener algo mas? porque no lo estas seteando, solo esta agregando.
 
 string Atleta::nombre() const {
     return _nombre;
@@ -107,19 +110,87 @@ void Atleta::entrenarNuevoDeporte(const Deporte &d, const int &c) {
 }
 
 void Atleta::mostrar(std::ostream &os) const {
+    os << "Atleta" << endl;
+    os << "\tNombre: " << nombre() << endl;
+    os << "\tSexo: " << genero() << endl;
+    os << "\tAño de Nac.: " << anioNacimiento() << endl;
+    os << "\tNacionalidad: " << nacionalidad() << endl;
+    os << "\tCiaNumber: " << ciaNumber() << endl;
+    os << "\tDeportes y Capacidades: " << endl;
+    int i = 0;
+    while(i < deportes().size()){
+        os << "(" << deportes()[i] << "," << " " << capacidad(deportes()[i]) << ")" << endl;
+    }
 }
 
 void Atleta::guardar(std::ostream &os) const {
+    os << "A"; //jajaja okey
+    os << " ";
+    os << "|";
+    os << _nombre;
+    os << "|";
+    os << " ";
+    os << "|";
+    os << _genero;
+    os << "|";
+    os << " ";
+    os << _anioNacimiento;
+    os << " ";
+    os << "|";
+    os << _nacionalidad;
+    os << "|";
+    os << " ";
+    os << _ciaNumber;
+    os << " ";
+    os << "["; // voy a empezar la lista de deportes.
+    int i = 0;
+    while(i < _deportes.size()){
+        os << "(";
+        os << "|";
+        os << _deportes[i].first;
+        os << "|";
+        os << ",";
+        os << " ";
+        os << _deportes[i].second;
+        os << ")";
+        os << ",";
+        i++;
+    }
+    os << "]";
+    os << endl;
 }
 
 void Atleta::cargar(std::istream &is) {
-}
+    is.ignore(3); // ignora "A |"
+    is >> _nombre; // asi es como deberia ser. el de genero no se que le pasa.
+    is.ignore(3); // ignora "| |"
+    is ;operator>>; _genero; //no se xq pasa esto, no deberia. mucha duda. mucha duda.
+    is.ignore(2); // ignora "| "
+    is >> _anioNacimiento;
+    is.ignore(2); // ignora " |"
+    is >> _nacionalidad;
+    is.ignore(2); // ignora "| "
+    is >> _ciaNumber;
+    is.ignore(2); // ignora " ["
+    int i = 0;
+    while(i < _deportes.size()){
+        is.ignore(2);// "(|"
+        is >> _deportes[i].first;
+        is.ignore(3);// "|, "
+        is >> _deportes[i].second;
+        is.ignore(2); // "),"
+        i++;
+    }
+    is.ignore(1); // "]"
+} //madre mia, listo.
 
 std::ostream &operator<<(std::ostream &os, const Atleta &a) {
+    a.mostrar(os);
     return os;
 }
 
 std::istream &operator>>(std::istream &is, Atleta &a) {
+    a.cargar(is);
     return is;
 }
 

@@ -48,6 +48,7 @@ public:
     Atleta operator=(const Atleta &a);
 
     //Entrada y salida
+
     void mostrar(std::ostream &os) const;
 
     void guardar(std::ostream &os) const;
