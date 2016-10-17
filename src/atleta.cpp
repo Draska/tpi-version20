@@ -34,6 +34,7 @@ Atleta::Atleta(const string &n, const Genero &g, const int &a, const Pais &p, co
 }                                                //R: si, esto es para crear un chabon de cero, no existe nada antes, si queres
 // podes reemplazar esa linea con: vector<pair<Deporte,int>> depo_inicial = {make_pair("Tenis",50)};
 //                                 _deportes = depo_inicial;
+// RR: claro pero lo que digo es si _deportes no podria ya tener algo mas? porque no lo estas seteando, solo esta agregando.
 
 string Atleta::nombre() const {
     return _nombre;
@@ -114,19 +115,18 @@ void Atleta::mostrar(std::ostream &os) const {
     os << "\tSexo: " << genero() << endl;
     os << "\tAño de Nac.: " << anioNacimiento() << endl;
     os << "\tNacionalidad: " << nacionalidad() << endl;
-    os << "\tCiaNumber " << ciaNumber() << endl;
+    os << "\tCiaNumber: " << ciaNumber() << endl;
     os << "\tDeportes y Capacidades: " << endl;
     int i = 0;
     while(i < deportes().size()){
-        os << "(" << deportes()[i] << "," << " "<< capacidad(deportes()[i]) << ")" << endl;
+        os << "(" << deportes()[i] << "," << " " << capacidad(deportes()[i]) << ")" << endl;
     }
-
 }
 
 void Atleta::guardar(std::ostream &os) const {
-    os << "A"; //hago uno a uno, asi los cuenta por separado, sino creo que cuentan como una cosa sola
-    os << " "; // me refiero a que "A |" son 3 chars, pero si los hago en una linea es capaz de contar uno solo.
-    os << "|"; // el ejemplo del profe, los hizo por separado, tendra su razon...
+    os << "A"; //jajaja okey
+    os << " ";
+    os << "|";
     os << _nombre;
     os << "|";
     os << " ";
@@ -158,7 +158,6 @@ void Atleta::guardar(std::ostream &os) const {
     }
     os << "]";
     os << endl;
-
 }
 
 void Atleta::cargar(std::istream &is) {
