@@ -96,14 +96,14 @@ void Atleta::entrenarNuevoDeporte(const Deporte &d, const int &c) {
     pair<Deporte, int> de_porte = make_pair(d, c);
     vector<pair<Deporte, int>> nuevo_deportes;
     while (i < deportes().size()){
-        if (!agregado && deportes()[i] > d){
+        if (!agregado && deportes()[i] > d){ // si d < deportes[i] va en ese lugar de la lista. no pierde el orden.
             nuevo_deportes.push_back(de_porte);
             agregado = true;
         }
-        nuevo_deportes.push_back(_deportes[i]);
+        nuevo_deportes.push_back(_deportes[i]);// siempre se agregan los deportes que ya sabia(pese a que no entre en el if.)
         i++;
     }
-    if (!agregado){
+    if (!agregado){ // si d > deportes[i] siempre, pero no estaba agregado, va al final de todos.
         nuevo_deportes.push_back(de_porte);
     }
     _deportes = nuevo_deportes;
@@ -119,7 +119,7 @@ void Atleta::mostrar(std::ostream &os) const {
     os << "\tDeportes y Capacidades: " << endl;
     int i = 0;
     while(i < deportes().size()){
-        os << "(" << deportes()[i] << "," << " " << capacidad(deportes()[i]) << ")" << endl;
+        os << "(" << deportes()[i] << "," << " " << capacidad(deportes()[i]) << ")" << endl; i++;
     }
 }
 
@@ -161,10 +161,15 @@ void Atleta::guardar(std::ostream &os) const {
 }
 
 void Atleta::cargar(std::istream &is) {
-    /*is.ignore(3); // ignora "A |"
-    is >> _nombre; // asi es como deberia ser. el de genero no se que le pasa.
+    is.ignore(3); // ignora "A |"
+    is >> _nombre; //
     is.ignore(3); // ignora "| |"
-    is ;operator>>; _genero; //Tiene problemas con genero.
+    string gen; getline(is,gen, '|'); // sugerencia de Luciano. Si funca ganamos.
+    if(gen == "Masculino"){
+        _genero = Masculino;
+    } else {
+        _genero = Femenino;
+    }
     is.ignore(2); // ignora "| "
     is >> _anioNacimiento;
     is.ignore(2); // ignora " |"
@@ -172,7 +177,7 @@ void Atleta::cargar(std::istream &is) {
     is.ignore(2); // ignora "| "
     is >> _ciaNumber;
     is.ignore(2); // ignora " ["
-    int i = 0;
+    int i = 0; //en vez de este while, quizas un 'getline' otra vez..
     while(i < _deportes.size()){
         is.ignore(2);// "(|"
         is >> _deportes[i].first;
@@ -181,26 +186,25 @@ void Atleta::cargar(std::istream &is) {
         is.ignore(2); // "),"
         i++;
     }
-    is.ignore(1); // "]"*/
+    is.ignore(1); // "]"
 } //madre mia, listo.
 
 
 std::ostream &operator<<(std::ostream &os, const Atleta &a) {
-    //a.mostrar(os);
+    a.mostrar(os);
     return os;
 }
 
 std::istream &operator>>(std::istream &is, Atleta &a) {
-    //a.cargar(is);
+    a.cargar(is);
     return is;
 }
 
 bool Atleta::operator==(const Atleta &a) const {
     bool res = false;
     if (nombre() == a.nombre() && genero() == a.genero() && anioNacimiento() == a.anioNacimiento() &&
-        nacionalidad() == a.nacionalidad() && ciaNumber() == a.ciaNumber() && deportes().size() == a.deportes().size()
-        && mismosDeportesYCapacidades(a)){
-        res = true;
+        nacionalidad() == a.nacionalidad() && ciaNumber() == a.ciaNumber() && deportes().size() == a.deportes().size()){
+        res = mismosDeportesYCapacidades(a);
     }
     return res;
 }
