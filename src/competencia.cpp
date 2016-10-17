@@ -1,6 +1,17 @@
 #include "../include/competencia.h"
 
 //Métodos privados:
+bool Competencia::perteneceAtletinioEnCompe(const Atleta &a, const Competencia &c) const {
+    int i = 0;
+    bool res = false;
+    while (i < c.participantes().size() && !res){
+        if (a.operator==(c.participantes()[i])){
+            res = true;
+        }
+        i++;
+    }
+    return res;
+}
 
 Atleta Competencia::atletaDeCiaNumber(const int &cia_number) const {
     bool stop = false;
@@ -189,7 +200,7 @@ bool Competencia::operator==(const Competencia &c) const {
     if (participantes().size() == c.participantes().size() && categoria() == c.categoria() && finalizada() == c.finalizada()){
         res = true;
         while (i < participantes().size() && res){
-            res = perteneceAtletaEnCompe(participantes()[i], c);
+            res = perteneceAtletinioEnCompe(participantes()[i], c);
             i++;
         }
         if (finalizada() && res){

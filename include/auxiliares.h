@@ -4,7 +4,7 @@
 #include "tipos.h"
 #include "atleta.h"
 #include "competencia.h"
-#include "jjoo.h"
+
 
 bool perteneceAtletaEnCompe(const Atleta &a, const Competencia &c);
 bool perteneceCompetenciaEnCrono(const Competencia &c, const vector<Competencia> &cs);

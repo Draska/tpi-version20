@@ -4,7 +4,7 @@
 #include "tipos.h"
 #include "atleta.h"
 #include "competencia.h"
-//#include "auxiliares.h"
+#include "auxiliares.h"
 
 class JJOO {
 
