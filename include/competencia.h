@@ -3,7 +3,7 @@
 
 #include "tipos.h"
 #include "atleta.h"
-#include "auxiliares.h"
+//#include "auxiliares.h"
 
 class Competencia {
 

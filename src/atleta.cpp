@@ -93,7 +93,7 @@ Deporte Atleta::especialidad() const {
 void Atleta::entrenarNuevoDeporte(const Deporte &d, const int &c) {
     int i = 0;
     bool agregado = false;
-    pair de_porte = make_pair(d, c);
+    pair<Deporte, int> de_porte = make_pair(d, c);
     vector<pair<Deporte, int>> nuevo_deportes;
     while (i < deportes().size()){
         if (!agregado && deportes()[i] > d){
