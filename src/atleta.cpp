@@ -100,7 +100,9 @@ void Atleta::entrenarNuevoDeporte(const Deporte &d, const int &c) {
             nuevo_deportes.push_back(deporte);
             agregado = true;
         }
-        nuevo_deportes.push_back(_deportes[i]);// siempre se agregan los deportes que ya sabia(pese a que no entre en el if.)
+        if (deportes()[i] != d){
+            nuevo_deportes.push_back(_deportes[i]); // siempre se agregan los deportes que ya sabia(pese a que no entre en el if.)
+        }
         i++;
     }
     if (!agregado){ // si d > deportes[i] siempre, pero no estaba agregado, va al final de todos.
