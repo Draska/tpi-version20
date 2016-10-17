@@ -405,7 +405,7 @@ void JJOO::mostrar(std::ostream &os) const {
     i = 0;
     int k = 0;
     os << "\tCronograma: " << endl;
-    while (i < _cronograma.size()){
+    while (i < cantDias()){
         os << "Dia " << i+1 << ":" << endl;
         while (k < cronograma(i).size()){
             os << "[";
@@ -439,7 +439,7 @@ void JJOO::guardar(std::ostream &os) const {
     os << "[";
     int k = 0;
     i = 0;
-    while(i < _cronograma.size()){ //razonamiento similar al de mostrar.
+    while(i < cantDias()){ //razonamiento similar al de mostrar.
         os << "[";
         while (k < cronograma(i).size()){
             os << "(";
