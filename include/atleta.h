@@ -17,7 +17,7 @@ private:
     //Métodos privados:
 
     bool perteneceDeporteEnAtleta(const Deporte &d) const;
-    bool mismosDeportes(const Atleta &a) const;
+    bool mismosDeportesYCapacidades(const Atleta &a) const;
 
     //End
 

@@ -12,11 +12,11 @@ bool Atleta::perteneceDeporteEnAtleta(const Deporte &d) const {
     return res;
 }
 
-bool Atleta::mismosDeportes(const Atleta &a) const {
+bool Atleta::mismosDeportesYCapacidades(const Atleta &a) const {
     bool res = true;
     int i = 0;
     while (i < a.deportes().size() && res){
-        res = perteneceDeporteEnAtleta(a.deportes()[i]);
+        res = perteneceDeporteEnAtleta(a.deportes()[i]) && capacidad(a.deportes()[i]) == a.capacidad(a.deportes()[i]);
         i++;
     }
     return res;
@@ -161,7 +161,7 @@ void Atleta::guardar(std::ostream &os) const {
 }
 
 void Atleta::cargar(std::istream &is) {
-    is.ignore(3); // ignora "A |"
+    /*is.ignore(3); // ignora "A |"
     is >> _nombre; // asi es como deberia ser. el de genero no se que le pasa.
     is.ignore(3); // ignora "| |"
     is >> _genero; //Tiene problemas con genero.
@@ -181,16 +181,17 @@ void Atleta::cargar(std::istream &is) {
         is.ignore(2); // "),"
         i++;
     }
-    is.ignore(1); // "]"
+    is.ignore(1); // "]"*/
 } //madre mia, listo.
 
+
 std::ostream &operator<<(std::ostream &os, const Atleta &a) {
-    a.mostrar(os);
+    //a.mostrar(os);
     return os;
 }
 
 std::istream &operator>>(std::istream &is, Atleta &a) {
-    a.cargar(is);
+    //a.cargar(is);
     return is;
 }
 
@@ -198,7 +199,7 @@ bool Atleta::operator==(const Atleta &a) const {
     bool res = false;
     if (nombre() == a.nombre() && genero() == a.genero() && anioNacimiento() == a.anioNacimiento() &&
         nacionalidad() == a.nacionalidad() && ciaNumber() == a.ciaNumber() && deportes().size() == a.deportes().size()
-        && mismosDeportes(a)){
+        && mismosDeportesYCapacidades(a)){
         res = true;
     }
     return res;

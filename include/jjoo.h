@@ -24,6 +24,9 @@ private:
     int masDiasSinMedalla(const Pais p) const;
     int maxDiasSinMedalla(const vector<Pais> &ps) const;
     bool perteneceAtletaEnAlgunaCompe(const Atleta &a) const;
+    bool mismosAtletas(const JJOO &j) const;
+    bool mismasCompetencias(const JJOO &j, const int &d) const;
+    bool mismosCronogramas(const JJOO &j) const;
 
     //End
 

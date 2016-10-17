@@ -16,7 +16,7 @@ private:
 
     //Métodos privados:
 
-    bool perteneceAtletinioEnCompe(const Atleta &a, const Competencia &c) const;
+    bool perteneceAtletinioEnCompe(const Atleta &a) const;
     Atleta atletaDeCiaNumber(const int &cia_number) const;
     bool loDescubrenDopado(const Atleta &a) const;
     bool fueControladoYDioIgual(const pair<Atleta, bool> &a) const;
