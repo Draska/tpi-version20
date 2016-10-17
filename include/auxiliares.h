@@ -1,5 +1,5 @@
-#ifndef TPI_AUXILIARES_H
-#define TPI_AUXILIARES_H
+//#ifndef TPI_AUXILIARES_H
+//#define TPI_AUXILIARES_H
 
 #include "tipos.h"
 #include "atleta.h"
@@ -21,4 +21,4 @@ vector<Pais> paisesDeLosJuegos(const vector<Atleta> &as);
 Atleta elMenosCapaz(const vector<pair<Atleta,Deporte>> &as);
 void siFinalizadaEsta2Finalizo1(Competencia &c1,const Competencia &c2);
 
-#endif
+//#endif

@@ -147,7 +147,7 @@ Pais elMejorDelDia(const vector<Competencia> &cs){
     return res;
 }
 
-void siFinalizadaEsta2Finalizo1(Competencia &c1,const Competencia &c2){ //esta noes const, xq finaliza una comp.
+void siFinalizadaEsta2Finalizo1(Competencia &c1,const Competencia &c2){
     int i = 0;
     vector<int> rank_to_pos;
     vector<pair<int,bool>> controol;
@@ -155,7 +155,7 @@ void siFinalizadaEsta2Finalizo1(Competencia &c1,const Competencia &c2){ //esta n
         while(i < c2.ranking().size()){
             rank_to_pos.push_back(c2.ranking()[i].ciaNumber());
             controol.push_back(make_pair(c2.participantes()[i].ciaNumber(),c2.leDioPositivo(c2.participantes()[i])));
-            i++;//tuve que seguir la definicion de finalizar,que usa numeros en vez de atletas, asi me ahorraba crearla de nuevo.
+            i++;
         }
         c1.finalizar(rank_to_pos,controol);
     }
