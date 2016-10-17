@@ -164,7 +164,7 @@ void Atleta::cargar(std::istream &is) {
     is.ignore(3); // ignora "A |"
     is >> _nombre; // asi es como deberia ser. el de genero no se que le pasa.
     is.ignore(3); // ignora "| |"
-    is ;operator>>; _genero; //Tiene problemas con genero.
+    is >> _genero; //Tiene problemas con genero.
     is.ignore(2); // ignora "| "
     is >> _anioNacimiento;
     is.ignore(2); // ignora " |"
