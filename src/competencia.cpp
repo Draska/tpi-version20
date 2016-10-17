@@ -1,11 +1,12 @@
 #include "../include/competencia.h"
 
 //Métodos privados:
-bool Competencia::perteneceAtletinioEnCompe(const Atleta &a, const Competencia &c) const {
+
+bool Competencia::perteneceAtletinioEnCompe(const Atleta &a) const {
     int i = 0;
     bool res = false;
-    while (i < c.participantes().size() && !res){
-        if (a.operator==(c.participantes()[i])){
+    while (i < participantes().size() && !res){
+        if (a.operator==(participantes()[i])){
             res = true;
         }
         i++;
@@ -159,7 +160,7 @@ void Competencia::mostrar(std::ostream &os) const {
 void Competencia::guardar(std::ostream &os) const {
 }
 
-void Competencia::cargar(std::istream &is) {
+/*void Competencia::cargar(std::istream &is) {
     is.ignore(4); // ignora "C (|"
     is >> _categoria.first;
     is.ignore(4); // ignora "|, |"
@@ -182,15 +183,15 @@ void Competencia::cargar(std::istream &is) {
         i++;
     }
 
-}
+}*/
 
 std::ostream &operator<<(std::ostream &os, const Competencia &c) {
-    c.mostrar(os);
+  //  c.mostrar(os);
     return os;
 }
 
 std::istream &operator>>(std::istream &is, Competencia &c) {
-    c.cargar(is);
+//    c.cargar(is);
     return is;
 }
 
@@ -200,7 +201,7 @@ bool Competencia::operator==(const Competencia &c) const {
     if (participantes().size() == c.participantes().size() && categoria() == c.categoria() && finalizada() == c.finalizada()){
         res = true;
         while (i < participantes().size() && res){
-            res = perteneceAtletinioEnCompe(participantes()[i], c);
+            res = c.perteneceAtletinioEnCompe(participantes()[i]);
             i++;
         }
         if (finalizada() && res){

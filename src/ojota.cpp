@@ -1,6 +1,6 @@
 #include "../include/jjoo.h"
 
-Atleta atletaProdigio(const JJOO &j) const {
+/*Atleta atletaProdigio(const JJOO &j) const {
     // estado E0;
     // vale REQ: |competenciasConOroEnPodio(j)| > 0;
     int m = 0; Atleta crack = j.competenciasFinalizadasConOroEnPodio()[m].ranking()[0];
@@ -43,7 +43,7 @@ Atleta atletaProdigio(const JJOO &j) const {
     // vale i == i@E3 && res == crack@E3;
     // implica (forAll k<-[0..n))anioNacimiento(Campeon(competenciasConOroEnPodio(j)[k])) =< anoNacimiento(res) &&
     // res == Campeon(competenciasConOroEnPodio(j)[m])
-}
+}*/
 // Demostrar el while:
 // Pc -> I:
 
