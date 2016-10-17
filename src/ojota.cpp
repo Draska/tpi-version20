@@ -7,7 +7,7 @@
     Atleta crack = j.competenciasFinalizadasConOroEnPodio()[m].ranking()[0];
     // estado E1;
     // vale m == 0 && crack == Campeon(competenciasConOroEnPodio(j)[0]);
-    int i = 1; //el cero ya arranca en crack, asi que no hace falta mirarlo. Creeme, simplifica las cosas.
+    int i = 1;
     int n = j.competenciasFinalizadasConOroEnPodio().size();
     // estado E2;
     // vale m == m@E1 && crack == crack@E1 && i == 1 && n == |competenciasConOroEnPodio(j)|;
@@ -96,7 +96,9 @@
 //c: 0 -> v < c == n - i < 0 -> i >= n == ¬ (i < n) -> ¬ Bif;
 //con I sacamos además que n == i;
 
-// el IF:
+// --------------------------------------------------------------------------
+
+// Demostrar el IF:
 
 //RAMA TRUE Pif && Bif :
 //
