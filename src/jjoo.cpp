@@ -213,7 +213,7 @@ vector<Atleta> JJOO::dePaseo() const {
         i++;
     }
     return fueron_de_paseo;
-} //te gusta más así?
+} //te gusta más así? - sí.
 
 vector<pair<Pais, vector<int>>> JJOO::medallero() const { //decime si te gusta ;) grrr
     int i = 0;
@@ -275,7 +275,7 @@ vector<Atleta> JJOO::losMasFracasados(const Pais &p) const {
     i = 0;
     while (i < participativo.size()){
         if(cantDeMedallas(participativo[i]) == 0){
-            losers.push_back(participativo[i]);
+            losers.push_back(participativo[i]); // ja! fracasados!
         }
         i++;
     }
@@ -310,8 +310,7 @@ void JJOO::liuSong(const Atleta &a, const Pais &p) {
             if (perteneceAtletaEnCompe(a,cronograma(i)[j])) {//si a esta en comp, creo una igual, pero con el otro liu
                 Competencia compe_con_liu_argento = Competencia(cronograma(i)[j].categoria().first,
                                                                 cronograma(i)[j].categoria().second,
-                                                                atletas_con_nuevo_liu);//esto hay que pensarlo. Puede que
-                //este metiendo siempre todos los atletas de los juegos como participantes. habria que filtrar por cat.
+                                                                atletas_con_nuevo_liu);//esto hay que pensarlo.
                 siFinalizadaEsta2Finalizo1(compe_con_liu_argento,cronograma(i)[j]);
                 competencias_con_nuevo_liu.push_back(compe_con_liu_argento);//y la agrego a la lista de compes actualizada
             }else{
@@ -367,7 +366,7 @@ bool JJOO::uyOrdenadoAsiHayUnPatron() const {
 vector<Pais> JJOO::sequiaOlimpica() const {
     vector<Pais> ret;
     int i = 0;
-    vector<Pais> ps = paisesDeLosJuegos(atletas());//hice con parametro xq c++ estaba haciendo cosas raras sino.
+    vector<Pais> ps = paisesDeLosJuegos(atletas());
     while(i < ps.size()) {
         if (masDiasSinMedalla(ps[i]) == maxDiasSinMedalla(ps)) {
             ret.push_back(ps[i]);
@@ -377,8 +376,7 @@ vector<Pais> JJOO::sequiaOlimpica() const {
     return ret;
 }
 
-void JJOO::transcurrirDia() { // esta estaba mal max, 1) tenias que fijarte solo en el ultimo dia,
-    // no ir pasando por todos los dias, chequea la especificacion.
+void JJOO::transcurrirDia() {
     int i = 0;
     while(i < cronograma(jornadaActual()).size()){
         if (!cronograma(i)[jornadaActual()].finalizada()){
@@ -401,10 +399,12 @@ void JJOO::cargar(std::istream &is) {
 }
 
 std::ostream &operator<<(std::ostream &os, const JJOO &j) {
+    j.mostrar(os);
     return os;
 }
 
 std::istream &operator>>(std::istream &is, JJOO &j) {
+    j.cargar(is);
     return is;
 }
 

@@ -155,43 +155,149 @@ void Competencia::sancionarTramposos() {
 }
 
 void Competencia::mostrar(std::ostream &os) const {
+    os << "Competencia" << endl;
+    os << "\tCategoria: " << "(" << categoria().first << "," << categoria().second << ")" << endl;
+    os << "\tFinalizada: " << finalizada() << endl;
+    int i = 0;
+    os << "\tParticipantes: " << endl;
+    while(i < participantes().size()){
+        os << "(";
+        participantes()[i].mostrar(os);
+        os << ")";
+        os << endl;
+        i++;
+    }
+    if(finalizada()){
+        i = 0;
+        os << "\tRanking" << endl;
+        while (i < ranking().size()){
+            os << "(" << ranking()[i].ciaNumber() << ")" << endl; i++;
+        }
+        i = 0;
+        os << "\t (Le toco Control, Que le dio): " << endl;
+        while (i < lesTocoControlAntiDoping().size()){
+            os << "(" << lesTocoControlAntiDoping()[i].ciaNumber() << "," <<
+               leDioPositivo(lesTocoControlAntiDoping()[i]) << ")" << endl; i++;
+        }
+    } else {
+        os << "\tRanking: " << "" << endl;
+        os << "\t (Le toco Control, Que le dio): " << "" << endl;
+    }
+
 }
 
 void Competencia::guardar(std::ostream &os) const {
+    os << "C";
+    os << " ";
+    os << "(";
+    os << "|";
+    os << categoria().first;
+    os << "|";
+    os << ",";
+    os << " ";
+    os << "|";
+    os << categoria().second;
+    os << "|";
+    os << ")";
+    os << " ";
+    os << "|";
+    os << finalizada();
+    os << "|";
+    os << " ";
+    os << "["; // voy a empezar la lista de participantes.
+    int i = 0;
+    while(i < participantes().size()){
+        os << "(";
+        participantes()[i].guardar(os);
+        os << ")";
+        os << ",";
+        i++;
+    }
+    os << "]"; //listo participantes...
+    os << " ";
+    os << "[";
+    if(finalizada()){
+        i = 0;
+        while(i < ranking().size()){
+            os << ranking()[i].ciaNumber(); // hacer ranking
+            os << ",";
+            i++;
+        }
+        os << "]";
+        os << " ";
+        os << "[";
+        i = 0;
+        while(i < lesTocoControlAntiDoping().size()){ // hacer el lesTocoControl
+            os << "(";
+            os << lesTocoControlAntiDoping()[i].ciaNumber();
+            os << ",";
+            os << " ";
+            os << "|";
+            os << leDioPositivo(lesTocoControlAntiDoping()[i]);
+            os << "|";
+            os << ")";
+            os << ",";
+            i++;
+        }
+        os << "]";
+
+    } else { // si !finalizada va todo vacio
+        os << "";
+        os << "]";
+        os << " ";
+        os << "[";
+        os << "";
+        os << "]";
+    }
+    os << endl;
 }
 
-/*void Competencia::cargar(std::istream &is) {
+void Competencia::cargar(std::istream &is) {
     is.ignore(4); // ignora "C (|"
     is >> _categoria.first;
     is.ignore(4); // ignora "|, |"
-    is ;operator>>; _categoria.second; //tiene algun tipo de problema con genero. puta madre.
+    string genes; getline(is,genes, '|'); // sugerencia de Luciano. Si funca ganamos.
+    if(genes == "Masculino"){
+        _categoria.second = Masculino;
+    } else {
+        _categoria.second = Femenino;
+    }
     is.ignore(4); // ignora "|) | "
     is >> _finalizada;
     is.ignore(3); // ignora "| ["
-    int i = 0;
+    int i = 0; // voy a cargar los participantes --> tengo mis dudas sobre este metodo.
     while(i < _participantes.size()){
-        is.ignore(1);// "("
-        is ;operator>>; _participantes[i].cargar(is);
-        is.ignore(2);// ")," y en el ultimo es ")]"
-        i++;
+        is.ignore(1);// ignora "("
+        _participantes[i].cargar(is); // carga en participante[i] al atleta en esa linea
+        is.ignore(2);// ignora ")," y en el ultimo es ")]"
+        i++; //mi duda es si entiende cuando salir del while
     }
-    is.ignore(2); // " ["
+    is.ignore(2); // ignora " ["
     i = 0;
-    while(i < _ranking.size()){
-        is ;operator>>; _ranking[i]; // sin cargar, xq se supone que son solo nros, no atletas por completo(?)
-        is.ignore(2);// ", " y en el ultimo es "] "
+    while(i < _ranking.size()){ //no si se va a salir de este while.
+        is >> _ranking[i]; // sin cargar, xq se supone que son solo nros, no atletas por completo
+        is.ignore(2);// ignora ", " y en el ultimo es "] "
         i++;
     }
-
-}*/
+    is.ignore(1); // ignora "["
+    i = 0; // agarro las tuplas para le toco control
+    while(i < _lesTocoControlAntiDoping.size()){ //mis guardas son pesimas. jaja.
+        is.ignore(2);// ignora "[(" en el primero, y " (" en el resto
+        is >> _lesTocoControlAntiDoping[i].first;
+        is.ignore(3);// ", |"
+        is >> _lesTocoControlAntiDoping[i].second; //empuja bien bool?
+        is.ignore(3); // ignora "|)," y en el ultimo "|)]"
+        i++;
+    } // sigo sin creer que entienda como salir de whiles. esto debe fallar mal.
+}
 
 std::ostream &operator<<(std::ostream &os, const Competencia &c) {
-  //  c.mostrar(os);
+    c.mostrar(os);
     return os;
 }
 
 std::istream &operator>>(std::istream &is, Competencia &c) {
-//    c.cargar(is);
+    c.cargar(is);
     return is;
 }
 
