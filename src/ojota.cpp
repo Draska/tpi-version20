@@ -1,6 +1,6 @@
 #include "../include/jjoo.h"
 
-Atleta atletaProdigio(const JJOO &j) const {
+/*Atleta atletaProdigio(const JJOO &j) const {
     // estado E0;
     // vale REQ: |competenciasConOroEnPodio(j)| > 0;
     int m = 0;
@@ -13,16 +13,16 @@ Atleta atletaProdigio(const JJOO &j) const {
     // vale m == m@E1 && crack == crack@E1 && i == 1 && n == |competenciasConOroEnPodio(j)|;
     // implica m == 0 && crack == Campeon(competenciasConOroEnPodio(j)[0]); (Por E1)
     // Pc: m == 0 && crack == Campeon(competenciasConOroEnPodio(j)[0]) && i == 1 && n == |competenciasConOroEnPodio(j)| && n > 0; (Por REQ)
-    while (i < n){ //Bc: i < n
+    while (i < n){ // Bc: i < n
         // I: 1 =< i =< n && crack == Campeon(competenciasConOroEnPodio(j)[m]) && 0 =< m =< i &&
-        // (forAll k<-[0..i))anioNacimiento(Campeon(competenciasConOroEnPodio(j)[k])) <= anoNacimiento(crack);
-        // v: |competenciasConOroEnPodio(j)| - i;
+        // (forAll k<-[0..i))anioNacimiento(Campeon(competenciasConOroEnPodio(j)[k])) =< anoNacimiento(crack);
+        // v: n - i;
         // c: 0;
-        // estado C0
+        // estado C0:
         // vale I && Bc;
-        // Pif: I && Bc;
-        if (j.competenciasFinalizadasConOroEnPodio()[i].ranking()[0].anioNacimiento() >= crack.anioNacimiento()){
-            //Bif: anioNacimiento(Campeon(competenciasConOroEnPodio(j)[i])) >= anoNacimiento(crack@C0);
+        // Pif: I && Bc && i == i@E2;
+        if (j.competenciasFinalizadasConOroEnPodio()[i].ranking()[0].anioNacimiento() > crack.anioNacimiento()){
+            // Bif: anioNacimiento(Campeon(competenciasConOroEnPodio(j)[i@C0])) >= anoNacimiento(crack@C0);
             // estado Eif0
             // vale Pif && Bif;
             m = i;
