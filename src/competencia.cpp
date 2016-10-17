@@ -138,6 +138,28 @@ void Competencia::guardar(std::ostream &os) const {
 }
 
 void Competencia::cargar(std::istream &is) {
+    is.ignore(4); // ignora "C (|"
+    is >> _categoria.first;
+    is.ignore(4); // ignora "|, |"
+    is ;operator>>; _categoria.second; //tiene algun tipo de problema con genero. puta madre.
+    is.ignore(4); // ignora "|) | "
+    is >> _finalizada;
+    is.ignore(3); // ignora "| ["
+    int i = 0;
+    while(i < _participantes.size()){
+        is.ignore(1);// "("
+        is ;operator>>; _participantes[i].cargar(is);
+        is.ignore(2);// ")," y en el ultimo es ")]"
+        i++;
+    }
+    is.ignore(2); // " ["
+    i = 0;
+    while(i < _ranking.size()){
+        is ;operator>>; _ranking[i]; // sin cargar, xq se supone que son solo nros, no atletas por completo(?)
+        is.ignore(2);// ", " y en el ultimo es "] "
+        i++;
+    }
+
 }
 
 std::ostream &operator<<(std::ostream &os, const Competencia &c) {
