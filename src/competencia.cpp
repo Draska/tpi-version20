@@ -177,7 +177,7 @@ void Competencia::mostrar(std::ostream &os) const {
         os << "\t (Le toco Control, Que le dio): " << endl;
         while (i < lesTocoControlAntiDoping().size()){
             os << "(" << lesTocoControlAntiDoping()[i].ciaNumber() << "," <<
-               leDioPositivo(lesTocoControlAntiDoping()[i]) << ")" << endl; i++;
+               leDioPositivo(lesTocoControlAntiDoping()[i]) << ")" << endl; i++; //partido en dos lineas. muy largo.
         }
     } else {
         os << "\tRanking: " << "" << endl;

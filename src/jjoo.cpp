@@ -390,12 +390,100 @@ void JJOO::transcurrirDia() {
 }
 
 void JJOO::mostrar(std::ostream &os) const {
+    os << "JJOO" << endl;
+    os << "\tAño: "  << anio() << endl;
+    os << "\tJornada Actual: " << jornadaActual() << endl;
+    int i = 0;
+    os << "\tAtletas: " << endl;
+    while(i < atletas().size()){
+        os << "(";
+        atletas()[i].mostrar(os);
+        os << ")";
+        os << endl;
+        i++;
+    }
+    i = 0;
+    int k = 0;
+    os << "\tCronograma: " << endl;
+    while (i < _cronograma.size()){
+        os << "Dia " << i+1 << ":" << endl;
+        while (k < cronograma(i).size()){
+            os << "[";
+            cronograma(i)[k].mostrar(os);
+            os << "]" << endl;
+            k++; // miro las k competencias en el dia i
+        }
+        i++;
+    }
+
 }
 
 void JJOO::guardar(std::ostream &os) const {
+    os << "J";
+    os << " ";
+    os << anio();
+    os << " ";
+    os << jornadaActual();
+    os << " ";
+    os << "["; // voy a empezar la lista de atletas.
+    int i = 0;
+    while(i < atletas().size()){
+        os << "(";
+        atletas()[i].guardar(os);
+        os << ")";
+        os << ",";
+        i++;
+    }
+    os << "]"; // listo atletas.
+    os << " ";
+    os << "[";
+    int k = 0;
+    i = 0;
+    while(i < _cronograma.size()){ //razonamiento similar al de mostrar.
+        os << "[";
+        while (k < cronograma(i).size()){
+            os << "(";
+            cronograma(i)[k].guardar(os);
+            os << ")";
+            os << ",";
+            k++;
+        }
+        os << "]";
+        i++;
+    }
+    os << "]";
+    os << endl;
+
 }
 
 void JJOO::cargar(std::istream &is) {
+    is.ignore(2); //ignora "J "
+    is >> _anio;
+    is.ignore(1); // ignora " "
+    is >> _jornadaActual;
+    is.ignore(2); // ignora " ["
+    int i = 0;
+    while(i < _atletas.size()){
+        is.ignore(1); //"("
+        _atletas[i].cargar(is);//funca este tipo de cosa?
+        is.ignore(2); // "),"
+        i++;
+    }
+    is.ignore(2); //" ["
+    i = 0;
+    int k = 0;
+    while(i < _cronograma.size()){ //razonamiento similar al de mostrar.
+        is.ignore(1); //"["
+        while (k < _cronograma[i].size()){
+            is.ignore(1); //"(";
+            _cronograma[i][k].cargar(is);
+            is.ignore(2); //"),";
+            k++;
+        }
+        is.ignore(1); //"]"
+        i++;
+    }
+    is.ignore(1); //"]"
 }
 
 std::ostream &operator<<(std::ostream &os, const JJOO &j) {
